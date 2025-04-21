@@ -1,15 +1,23 @@
 class Comic {
-  int id;
-  String title;
-  String description;
-  String thumbPath;
-  String thumbExtension;
+  final int id;
+  final String title;
+  final String thumbnailUrl;
+  final String description;
 
-  Comic(
-    this.id,
-    this.title,
-    this.description,
-    this.thumbExtension,
-    this.thumbPath,
-  );
+  Comic({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.thumbnailUrl,
+  });
+
+  factory Comic.fromJson(Map<String, dynamic> json) {
+    final thumbnail = json['thumbnail'];
+    return Comic(
+      id: json['id'],
+      title: json['title'],
+      description: json['textObjects']['text'] ?? "",
+      thumbnailUrl: '${thumbnail['path']}.${thumbnail['extension']}',
+    );
+  }
 }
