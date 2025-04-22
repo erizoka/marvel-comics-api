@@ -15,9 +15,7 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
   @override
   void initState() {
     super.initState();
-    _characters =
-        MarvelApi.fetchData("characters", Character.fromJson)
-            as Future<List<Character>>;
+    _characters = MarvelApi.fetchData("characters", Character.fromJson);
   }
 
   @override

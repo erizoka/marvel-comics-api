@@ -16,7 +16,7 @@ class Comic {
     return Comic(
       id: json['id'],
       title: json['title'],
-      description: json['textObjects']['text'] ?? "",
+      description: json['description'] ?? "",
       thumbnailUrl: '${thumbnail['path']}.${thumbnail['extension']}',
     );
   }
