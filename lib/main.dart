@@ -17,8 +17,9 @@ class MyApp extends StatelessWidget {
       title: 'Marvel Comics API',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 240, 32, 17),
-          secondary: Colors.black,
+          seedColor: Colors.black,
+          primary: Colors.black,
+          secondary: Color.fromRGBO(237, 29, 36, 1),
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.black,
@@ -33,6 +34,11 @@ class MyApp extends StatelessWidget {
           headlineMedium: textStyle,
           bodyLarge: textStyle,
           bodyMedium: textStyle,
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: Color.fromRGBO(237, 29, 36, 1),
+          unselectedItemColor: Colors.white,
         ),
       ),
       home: const HomeScreen(),

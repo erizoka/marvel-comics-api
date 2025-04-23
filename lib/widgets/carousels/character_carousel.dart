@@ -15,20 +15,31 @@ class CharacterCarousel extends StatelessWidget {
       builder: (ctx, snapshot) {
         if (!snapshot.hasData) {
           return CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.secondary,
             padding: EdgeInsets.all(20),
           );
         }
         final characters = snapshot.data!;
-        return CarouselSlider(
-          items:
-              characters.map((character) {
-                return GestureDetector(
-                  onTap: () => onTap(character),
-                  child: Image.network(character.thumbnailUrl),
-                );
-              }).toList(),
-          options: CarouselOptions(autoPlay: true, height: 200),
+        characters.removeWhere(
+          (c) => c.thumbnailUrl.contains("image_not_available"),
+        );
+        return SizedBox(
+          width: 230,
+          child: CarouselSlider(
+            items:
+                characters.map((character) {
+                  return GestureDetector(
+                    onTap: () => onTap(character),
+                    child: Image.network(character.thumbnailUrl),
+                  );
+                }).toList(),
+            options: CarouselOptions(
+              autoPlay: true,
+              height: 200,
+              enlargeCenterPage: true,
+              autoPlayCurve: Easing.legacy,
+            ),
+          ),
         );
       },
     );

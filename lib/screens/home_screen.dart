@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:marvel_comics/screens/character_detail_screen.dart';
-import 'package:marvel_comics/screens/comic_detail_screen.dart';
-import 'package:marvel_comics/widgets/carousels/character_carousel.dart';
-import 'package:marvel_comics/widgets/carousels/comics_carousel.dart';
+import 'package:marvel_comics/screens/characters_list_screen.dart';
+import 'package:marvel_comics/screens/comics_list_screen.dart';
+import 'package:marvel_comics/screens/multi_carousels_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,42 +11,48 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _index = 0;
+
   @override
   Widget build(BuildContext context) {
+    Widget child;
+    switch (_index) {
+      case 0:
+        child = MultiCarouselsScreen();
+        break;
+      case 1:
+        child = CharactersListScreen();
+        break;
+      case 2:
+        child = ComicsListScreen();
+        break;
+      default:
+        child = MultiCarouselsScreen();
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: Image.asset('assets/images/Marvel-Logo.png', scale: 2),
         centerTitle: true,
       ),
-      backgroundColor: Theme.of(context).colorScheme.secondary,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text('Characters'),
-            CharacterCarousel(
-              onTap: (character) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => CharacterDetailScreen(character: character),
-                  ),
-                );
-              },
-            ),
-            Text('Comics'),
-            ComicsCarousel(
-              onTap: (comic) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ComicDetailScreen(comic: comic),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      body: SizedBox.expand(child: child),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (newIndex) => setState(() => _index = newIndex),
+        currentIndex: _index,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Characters',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book_sharp),
+            label: 'Comics',
+          ),
+        ],
       ),
     );
   }
