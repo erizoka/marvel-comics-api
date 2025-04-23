@@ -42,6 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (newIndex) => setState(() => _index = newIndex),
         currentIndex: _index,
         backgroundColor: Theme.of(context).colorScheme.primary,
+        selectedFontSize: 17,
+        selectedIconTheme: IconThemeData(size: 35),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
