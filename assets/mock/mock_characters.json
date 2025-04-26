@@ -1,0 +1,51 @@
+{
+    "data": {
+        "results": [
+            {
+                "id": 1009610,
+                "name": "Spider-Man",
+                "description": "Bitten by a radioactive spider, Peter Parker now has spider-like abilities.",
+                "thumbnail": {
+                    "path": "https://i.annihil.us/u/prod/marvel/i/mg/3/50/526548a343e4b",
+                    "extension": "jpg"
+                }
+            },
+            {
+                "id": 1009368,
+                "name": "Iron Man",
+                "description": "Genius. Billionaire. Philanthropist. Tony Stark builds a high-tech suit to save his own life and then others.",
+                "thumbnail": {
+                    "path": "https://i.annihil.us/u/prod/marvel/i/mg/9/c0/527bb7b37ff55",
+                    "extension": "jpg"
+                }
+            },
+            {
+                "id": 1009220,
+                "name": "Captain America",
+                "description": "Recipient of the Super-Soldier serum, World War II hero Steve Rogers fights for American ideals as one of the world's mightiest heroes.",
+                "thumbnail": {
+                    "path": "https://i.pinimg.com/564x/65/5f/f2/655ff2ae3436efd8e7e7685ffda9383c",
+                    "extension": "jpg"
+                }
+            },
+            {
+                "id": 1009220,
+                "name": "Thor",
+                "description": "Recipient of the Super-Soldier serum, World War II hero Steve Rogers fights for American ideals as one of the world's mightiest heroes.",
+                "thumbnail": {
+                    "path": "https://i.pinimg.com/736x/8f/9d/07/8f9d076a6e816dc035f237b3fb3f9fa0",
+                    "extension": "jpg"
+                }
+            },
+            {
+                "id": 1009220,
+                "name": "Loki",
+                "description": "Recipient of the Super-Soldier serum, World War II hero Steve Rogers fights for American ideals as one of the world's mightiest heroes.",
+                "thumbnail": {
+                    "path": "https://64.media.tumblr.com/2b38a6cdbc97616fd6c202d9ac7eeb53/tumblr_p8ptjgt2XL1vgy167o5_1280",
+                    "extension": "png"
+                }
+            }
+        ]
+    }
+}

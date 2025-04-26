@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
           seedColor: Colors.black,
           primary: Colors.black,
           secondary: Color.fromRGBO(237, 29, 36, 1),
+          tertiary: const Color.fromARGB(255, 248, 244, 244),
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.black,
