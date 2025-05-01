@@ -54,6 +54,10 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.menu_book_sharp),
             label: 'Comics',
           ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.star_outline_outlined),
+          //   label: 'Favorites',
+          // ),
         ],
       ),
     );

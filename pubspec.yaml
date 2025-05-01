@@ -38,6 +38,7 @@ dependencies:
   carousel_slider: ^5.0.0
   flutter_dotenv: ^5.2.1
   crypto: ^3.0.6
+  standard_searchbar: ^2.1.1
 
 dev_dependencies:
   flutter_test:

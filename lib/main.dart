@@ -12,7 +12,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = TextStyle(color: Colors.white, fontSize: 25);
+    TextStyle textStyle = TextStyle(
+      color: Colors.white,
+      fontSize: 18,
+      fontFamily: 'PlusJakartaSans',
+    );
     return MaterialApp(
       title: 'Marvel Comics API',
       theme: ThemeData(

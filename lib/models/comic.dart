@@ -3,12 +3,14 @@ class Comic {
   final String title;
   final String thumbnailUrl;
   final String description;
+  bool? isFavorite;
 
   Comic({
     required this.id,
     required this.title,
     required this.description,
     required this.thumbnailUrl,
+    this.isFavorite,
   });
 
   factory Comic.fromJson(Map<String, dynamic> json) {

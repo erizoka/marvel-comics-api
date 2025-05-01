@@ -3,6 +3,7 @@ class Character {
   final String name;
   final String description;
   final String thumbnailUrl;
+  bool? isFavorite;
   // final List<Comic> comics;
 
   Character({
@@ -10,6 +11,7 @@ class Character {
     required this.name,
     required this.description,
     required this.thumbnailUrl,
+    this.isFavorite,
     // required this.comics,
   });
 
