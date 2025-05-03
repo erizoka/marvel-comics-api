@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marvel_comics/api/marvel_api_mock.dart';
+import 'package:marvel_comics/models/comic.dart';
 import 'package:marvel_comics/screens/comic_detail_screen.dart';
 import 'package:marvel_comics/widgets/custom_search_bar.dart';
 import 'package:marvel_comics/widgets/item_card.dart';
@@ -12,19 +13,47 @@ class ComicsListScreen extends StatefulWidget {
 }
 
 class _ComicsListScreenState extends State<ComicsListScreen> {
+  late Future<List<Comic>> _comics;
+  List<Comic> _filteredComics = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _comics = MarvelApiMock.fetchMockComics();
+  }
+
+  void _handleSearch(String input, List<Comic> allComics) {
+    setState(() {
+      if (input.isEmpty) {
+        _filteredComics = allComics;
+      } else {
+        _filteredComics =
+            allComics
+                .where(
+                  (char) =>
+                      char.title.toLowerCase().contains(input.toLowerCase()) ||
+                      char.description.toLowerCase().contains(
+                        input.toLowerCase(),
+                      ),
+                )
+                .toList();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: MarvelApiMock.fetchMockComics(),
+      future: _comics,
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(
               color: Theme.of(context).colorScheme.secondary,
-              padding: EdgeInsets.symmetric(vertical: 300),
+              strokeWidth: 5,
             ),
           );
-        } else if (snapshot.hasError) {
+        } else if (snapshot.hasError || !snapshot.hasData) {
           return Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 300),
@@ -32,38 +61,53 @@ class _ComicsListScreenState extends State<ComicsListScreen> {
             ),
           );
         }
-        final comics = snapshot.data!;
-        return Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Stack(
-            children: [
-              CustomSearchBar(
-                suggestionList: comics.map((c) => c.title).toList(),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 60),
-                child: GridView.count(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
-                  childAspectRatio: 0.48,
-                  children:
-                      comics.map((comic) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => ComicDetailScreen(comic: comic),
-                              ),
-                            );
-                          },
-                          child: ItemCard(comic: comic),
-                        );
-                      }).toList(),
+
+        final allComics = snapshot.data!;
+        final displayComics =
+            _filteredComics.isEmpty ? allComics : _filteredComics;
+
+        return RefreshIndicator(
+          onRefresh: () async {
+            final updated = await MarvelApiMock.fetchMockComics();
+            setState(() {
+              _filteredComics = [];
+              _comics = Future.value(updated);
+            });
+          },
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Stack(
+              children: [
+                CustomSearchBar(
+                  suggestionList: allComics.map((c) => c.title).toList(),
+                  onSubmit: (input) => _handleSearch(input, allComics),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 60),
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    childAspectRatio: 0.48,
+                    children:
+                        displayComics.map((comic) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (_) => ComicDetailScreen(comic: comic),
+                                ),
+                              );
+                            },
+                            child: ItemCard(comic: comic),
+                          );
+                        }).toList(),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
