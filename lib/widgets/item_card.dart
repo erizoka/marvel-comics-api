@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:marvel_comics/models/character.dart';
 import 'package:marvel_comics/models/comic.dart';
@@ -33,8 +34,11 @@ class ItemCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.network(character?.thumbnailUrl ?? comic!.thumbnailUrl),
-            Text(
+            Image.network(
+              character?.thumbnailUrl ?? comic!.thumbnailUrl,
+              cacheHeight: character != null ? 95 : null,
+            ),
+            AutoSizeText(
               character?.name ?? comic!.title,
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -43,6 +47,9 @@ class ItemCard extends StatelessWidget {
                 fontFamily: 'Roboto',
                 color: Theme.of(context).colorScheme.tertiary,
               ),
+              maxLines: character != null ? 1 : 3,
+              minFontSize: 14,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

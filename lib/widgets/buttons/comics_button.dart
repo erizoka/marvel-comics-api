@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ComicsButton extends StatelessWidget {
-  const ComicsButton({super.key});
+  final void Function() onPressed;
+  const ComicsButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {},
+      onPressed: onPressed,
       icon: Icon(
         Icons.menu_book_sharp,
         color: Theme.of(context).colorScheme.tertiary,

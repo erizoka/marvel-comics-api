@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:marvel_comics/api/marvel_api_mock.dart';
+import 'package:marvel_comics/api/marvel_api.dart';
 import 'package:marvel_comics/models/comic.dart';
-import 'package:marvel_comics/screens/comic_detail_screen.dart';
+import 'package:marvel_comics/screens/comics/comic_detail_screen.dart';
 import 'package:marvel_comics/widgets/custom_search_bar.dart';
 import 'package:marvel_comics/widgets/item_card.dart';
 
@@ -19,7 +19,7 @@ class _ComicsListScreenState extends State<ComicsListScreen> {
   @override
   void initState() {
     super.initState();
-    _comics = MarvelApiMock.fetchMockComics();
+    _comics = MarvelApi.fetchData('comics', Comic.fromJson);
   }
 
   void _handleSearch(String input, List<Comic> allComics) {
@@ -66,9 +66,13 @@ class _ComicsListScreenState extends State<ComicsListScreen> {
         final displayComics =
             _filteredComics.isEmpty ? allComics : _filteredComics;
 
+        displayComics.removeWhere(
+          (c) => c.thumbnailUrl.contains("image_not_available"),
+        );
+
         return RefreshIndicator(
           onRefresh: () async {
-            final updated = await MarvelApiMock.fetchMockComics();
+            final updated = await MarvelApi.fetchData('comics', Comic.fromJson);
             setState(() {
               _filteredComics = [];
               _comics = Future.value(updated);

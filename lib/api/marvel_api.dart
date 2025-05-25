@@ -18,7 +18,9 @@ class MarvelApi {
     T Function(Map<String, dynamic>) fromJson,
   ) async {
     final response = await api.get(
-      Uri.parse('$_baseUrl/$endpoint?ts=$_ts&apikey=$_apikey&hash=$_hash'),
+      Uri.parse(
+        '$_baseUrl/$endpoint?ts=$_ts&apikey=$_apikey&hash=$_hash&orderBy=modified&offset=127&limit=100',
+      ),
     );
 
     if (response.statusCode == 200) {
@@ -31,4 +33,4 @@ class MarvelApi {
   }
 }
 
-//TODO: adicionar opções de parametros na query
+//TODO: verificar se vai adicionar opções de parametros na query

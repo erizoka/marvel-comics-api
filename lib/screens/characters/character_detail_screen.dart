@@ -14,12 +14,24 @@ class CharacterDetailScreen extends StatefulWidget {
 
 class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
   late bool _isFavorite;
+  bool _isEventsOpen = false;
+  bool _isComicsOpen = false;
 
   void toggleFavorite() {
     setState(() {
       _isFavorite = !_isFavorite;
       widget.character.isFavorite = _isFavorite;
     });
+  }
+
+  void toggleEvents() {
+    _isEventsOpen = true;
+    _isComicsOpen = false;
+  }
+
+  void toggleComics() {
+    _isComicsOpen = false;
+    _isEventsOpen = false;
   }
 
   @override
@@ -110,8 +122,8 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
           mainAxisSpacing: 1,
           childAspectRatio: 3,
           children: [
-            ComicsButton(),
-            EventsButton(),
+            ComicsButton(onPressed: () => toggleComics),
+            EventsButton(onPressed: () => toggleEvents),
             FavoriteButton(isFavorite: _isFavorite, onPressed: toggleFavorite),
           ],
         ),

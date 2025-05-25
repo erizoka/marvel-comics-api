@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:marvel_comics/screens/characters_list_screen.dart';
-import 'package:marvel_comics/screens/comics_list_screen.dart';
+import 'package:marvel_comics/screens/characters/characters_list_screen.dart';
+import 'package:marvel_comics/screens/comics/comics_list_screen.dart';
 import 'package:marvel_comics/screens/multi_carousels_screen.dart';
 
 class HomeScreen extends StatefulWidget {

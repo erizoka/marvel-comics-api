@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class EventsButton extends StatelessWidget {
-  const EventsButton({super.key});
+  final void Function() onPressed;
+  const EventsButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {},
+      onPressed: onPressed,
       icon: Icon(
         Icons.calendar_month,
         color: Theme.of(context).colorScheme.tertiary,

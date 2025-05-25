@@ -14,6 +14,7 @@ migrate_working_dir/
 
 #API keys
 *.env
+marvel api.txt
 
 # IntelliJ related
 *.iml

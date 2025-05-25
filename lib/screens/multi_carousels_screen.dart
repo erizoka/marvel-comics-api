@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:marvel_comics/screens/character_detail_screen.dart';
-import 'package:marvel_comics/screens/comic_detail_screen.dart';
+import 'package:marvel_comics/screens/characters/character_detail_screen.dart';
+import 'package:marvel_comics/screens/comics/comic_detail_screen.dart';
 import 'package:marvel_comics/widgets/carousels/character_carousel.dart';
 import 'package:marvel_comics/widgets/carousels/comics_carousel.dart';
 
