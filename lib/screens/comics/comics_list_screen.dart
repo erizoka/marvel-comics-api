@@ -19,7 +19,7 @@ class _ComicsListScreenState extends State<ComicsListScreen> {
   @override
   void initState() {
     super.initState();
-    _comics = MarvelApi.fetchData('comics', Comic.fromJson);
+    _comics = MarvelApi.fetchAllData('comics', Comic.fromJson);
   }
 
   void _handleSearch(String input, List<Comic> allComics) {
@@ -72,7 +72,10 @@ class _ComicsListScreenState extends State<ComicsListScreen> {
 
         return RefreshIndicator(
           onRefresh: () async {
-            final updated = await MarvelApi.fetchData('comics', Comic.fromJson);
+            final updated = await MarvelApi.fetchAllData(
+              'comics',
+              Comic.fromJson,
+            );
             setState(() {
               _filteredComics = [];
               _comics = Future.value(updated);

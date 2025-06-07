@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:marvel_comics/api/marvel_api.dart';
 import 'package:marvel_comics/models/character.dart';
+import 'package:marvel_comics/models/comic.dart';
+import 'package:marvel_comics/screens/comics/comic_detail_screen.dart';
 import 'package:marvel_comics/widgets/buttons/comics_button.dart';
 import 'package:marvel_comics/widgets/buttons/events_button.dart';
 import 'package:marvel_comics/widgets/buttons/favorite_button.dart';
+import 'package:marvel_comics/widgets/item_card.dart';
 
 class CharacterDetailScreen extends StatefulWidget {
   final Character character;
@@ -16,6 +20,8 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
   late bool _isFavorite;
   bool _isEventsOpen = false;
   bool _isComicsOpen = false;
+  late Future<List<Comic>> _comics;
+  late Future<List<Comic>> _events;
 
   void toggleFavorite() {
     setState(() {
@@ -25,19 +31,45 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
   }
 
   void toggleEvents() {
-    _isEventsOpen = true;
-    _isComicsOpen = false;
+    setState(() {
+      _isEventsOpen = true;
+      _isComicsOpen = false;
+    });
   }
 
   void toggleComics() {
-    _isComicsOpen = false;
-    _isEventsOpen = false;
+    setState(() {
+      _isComicsOpen = true;
+      _isEventsOpen = false;
+    });
+  }
+
+  Center? checkSnapshotData(AsyncSnapshot snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.secondary,
+          strokeWidth: 5,
+        ),
+      );
+    }
+    if (snapshot.hasError || !snapshot.hasData) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 300),
+          child: Text('Error loading comics!'),
+        ),
+      );
+    }
+    return null;
   }
 
   @override
   void initState() {
     super.initState();
     _isFavorite = widget.character.isFavorite ?? false;
+    _comics = MarvelApi.fetchData(widget.character.comicsUri, Comic.fromJson);
+    _events = MarvelApi.fetchData(widget.character.eventsUri, Comic.fromJson);
   }
 
   @override
@@ -116,18 +148,89 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
             ),
           ),
         ),
+
         SliverGrid.count(
           crossAxisCount: 3,
           crossAxisSpacing: 3,
           mainAxisSpacing: 1,
           childAspectRatio: 3,
           children: [
-            ComicsButton(onPressed: () => toggleComics),
-            EventsButton(onPressed: () => toggleEvents),
+            ComicsButton(onPressed: toggleComics),
+            EventsButton(onPressed: toggleEvents),
             FavoriteButton(isFavorite: _isFavorite, onPressed: toggleFavorite),
           ],
         ),
-        SliverGrid.count(crossAxisCount: 4), //comics
+
+        if (_isComicsOpen)
+          FutureBuilder<List<Comic>>(
+            future: _comics,
+            builder: (context, snapshot) {
+              final errorWidget = checkSnapshotData(snapshot);
+              if (errorWidget != null) {
+                return SliverToBoxAdapter(child: errorWidget);
+              }
+
+              final comics = snapshot.data ?? [];
+
+              return SliverGrid.count(
+                crossAxisCount: 3,
+                mainAxisSpacing: 3,
+                crossAxisSpacing: 4,
+                childAspectRatio: 0.50,
+                children:
+                    comics.map((comic) {
+                      return Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ComicDetailScreen(comic: comic),
+                              ),
+                            );
+                          },
+                          child: ItemCard(comic: comic),
+                        ),
+                      );
+                    }).toList(),
+              );
+            },
+          ),
+
+        // if (_isEventsOpen)
+        FutureBuilder<List<Comic>>(
+          future: _events,
+          builder: (ctx, snapshot) {
+            final errorWidget = checkSnapshotData(snapshot);
+            if (errorWidget != null) {
+              return SliverToBoxAdapter(child: errorWidget);
+            }
+            final events = snapshot.data ?? [];
+
+            return SliverList(
+              delegate: SliverChildBuilderDelegate((context, index) {
+                events.map((event) {
+                  return Card(
+                    elevation: 2,
+                    shape: ContinuousRectangleBorder(),
+                    child: Row(
+                      children: [
+                        Image.network(event.thumbnailUrl),
+                        Column(
+                          children: [
+                            Text(event.title),
+                            Text(event.description),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                });
+              }),
+            );
+          },
+        ),
       ],
     );
   }

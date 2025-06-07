@@ -19,26 +19,35 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
   @override
   void initState() {
     super.initState();
-    _characters = MarvelApi.fetchData('characters', Character.fromJson);
+    _characters = MarvelApi.fetchAllData('characters', Character.fromJson);
   }
 
-  void _handleSearch(String input, List<Character> allCharacters) {
-    setState(() {
-      if (input.isEmpty) {
+  void _handleSearch(String input, List<Character> allCharacters) async {
+    if (input.isEmpty) {
+      setState(() {
         _filteredCharacters = allCharacters;
-      } else {
-        _filteredCharacters =
-            allCharacters
-                .where(
-                  (char) =>
-                      char.name.toLowerCase().contains(input.toLowerCase()) ||
-                      char.description.toLowerCase().contains(
-                        input.toLowerCase(),
-                      ),
-                )
-                .toList();
+      });
+    } else {
+      try {
+        final response = await MarvelApi.fetchByName(
+          'characters',
+          input,
+          Character.fromJson,
+        );
+        setState(() {
+          _filteredCharacters = response;
+        });
+      } catch (e) {
+        SnackBar(
+          content: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 300),
+              child: Text('Error loading characters: $e'),
+            ),
+          ),
+        );
       }
-    });
+    }
   }
 
   @override
@@ -65,13 +74,9 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
         final displayCharacters =
             _filteredCharacters.isEmpty ? allCharacters : _filteredCharacters;
 
-        displayCharacters.removeWhere(
-          (c) => c.thumbnailUrl.contains("image_not_available"),
-        );
-
         return RefreshIndicator(
           onRefresh: () async {
-            final updated = await MarvelApi.fetchData(
+            final updated = await MarvelApi.fetchAllData(
               'characters',
               Character.fromJson,
             );

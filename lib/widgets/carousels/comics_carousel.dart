@@ -11,7 +11,7 @@ class ComicsCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Comic>>(
-      future: MarvelApi.fetchData('comics', Comic.fromJson),
+      future: MarvelApi.fetchAllData('comics', Comic.fromJson),
       builder: (ctx, snapshot) {
         if (!snapshot.hasData) {
           return CircularProgressIndicator(

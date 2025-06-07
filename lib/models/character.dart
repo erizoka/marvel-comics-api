@@ -3,26 +3,29 @@ class Character {
   final String name;
   final String description;
   final String thumbnailUrl;
+  final String comicsUri;
+  final String eventsUri;
   bool? isFavorite;
-  // final List<Comic> comics;
 
   Character({
     required this.id,
     required this.name,
     required this.description,
     required this.thumbnailUrl,
+    required this.comicsUri,
+    required this.eventsUri,
     this.isFavorite,
-    // required this.comics,
   });
 
   factory Character.fromJson(Map<String, dynamic> json) {
     final thumbnail = json['thumbnail'];
-    // final comicsJson = json['comics']['items'] as List<dynamic>;
     return Character(
       id: json['id'],
       name: json['name'],
-      description: json['description'],
+      description: json['description'] ?? "No description available",
       thumbnailUrl: '${thumbnail['path']}.${thumbnail['extension']}',
+      comicsUri: json['comics']['collectionURI'],
+      eventsUri: json['events']['collectionURI'],
     );
   }
 }

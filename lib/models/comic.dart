@@ -18,7 +18,7 @@ class Comic {
     return Comic(
       id: json['id'],
       title: json['title'],
-      description: json['description'] ?? "",
+      description: json['description'] ?? "No description available",
       thumbnailUrl: '${thumbnail['path']}.${thumbnail['extension']}',
     );
   }

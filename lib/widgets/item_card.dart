@@ -10,6 +10,9 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final url = character?.thumbnailUrl ?? comic!.thumbnailUrl;
+    final isImageAvailable = !url.contains('image_not_available');
+
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -34,10 +37,9 @@ class ItemCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.network(
-              character?.thumbnailUrl ?? comic!.thumbnailUrl,
-              cacheHeight: character != null ? 95 : null,
-            ),
+            isImageAvailable
+                ? Image.network(url, cacheHeight: character != null ? 95 : null)
+                : Image.asset('assets/images/image_placeholder.jpg'),
             AutoSizeText(
               character?.name ?? comic!.title,
               textAlign: TextAlign.center,

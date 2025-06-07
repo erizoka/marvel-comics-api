@@ -21,6 +21,8 @@ class MarvelApiMock {
         name: e['name'],
         description: e['description'],
         thumbnailUrl: thumbnailUrl,
+        comicsUri: '',
+        eventsUri: '',
       );
     }).toList();
   }
