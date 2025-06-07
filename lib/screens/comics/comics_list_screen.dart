@@ -15,6 +15,7 @@ class ComicsListScreen extends StatefulWidget {
 class _ComicsListScreenState extends State<ComicsListScreen> {
   late Future<List<Comic>> _comics;
   List<Comic> _filteredComics = [];
+  var _wasASearchMade = false;
 
   @override
   void initState() {
@@ -22,22 +23,41 @@ class _ComicsListScreenState extends State<ComicsListScreen> {
     _comics = MarvelApi.fetchAllData('comics', Comic.fromJson);
   }
 
-  void _handleSearch(String input, List<Comic> allComics) {
-    setState(() {
-      if (input.isEmpty) {
+  void _handleSearch(String input, List<Comic> allComics) async {
+    if (input.isEmpty) {
+      setState(() {
         _filteredComics = allComics;
-      } else {
-        _filteredComics =
-            allComics
-                .where(
-                  (char) =>
-                      char.title.toLowerCase().contains(input.toLowerCase()) ||
-                      char.description.toLowerCase().contains(
-                        input.toLowerCase(),
-                      ),
-                )
-                .toList();
+      });
+    } else {
+      try {
+        final response = await MarvelApi.fetchByName(
+          'comics',
+          input,
+          Comic.fromJson,
+        );
+        setState(() {
+          _filteredComics = response;
+          _wasASearchMade = true;
+        });
+      } catch (e) {
+        SnackBar(
+          content: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 300),
+              child: Text('Error loading comics: $e'),
+            ),
+          ),
+        );
       }
+    }
+  }
+
+  Future<void> _handleRefresh() async {
+    final updated = await MarvelApi.fetchAllData('comics', Comic.fromJson);
+    setState(() {
+      _filteredComics = [];
+      _wasASearchMade = false;
+      _comics = Future.value(updated);
     });
   }
 
@@ -64,23 +84,10 @@ class _ComicsListScreenState extends State<ComicsListScreen> {
 
         final allComics = snapshot.data!;
         final displayComics =
-            _filteredComics.isEmpty ? allComics : _filteredComics;
-
-        displayComics.removeWhere(
-          (c) => c.thumbnailUrl.contains("image_not_available"),
-        );
+            _filteredComics.isNotEmpty ? _filteredComics : allComics;
 
         return RefreshIndicator(
-          onRefresh: () async {
-            final updated = await MarvelApi.fetchAllData(
-              'comics',
-              Comic.fromJson,
-            );
-            setState(() {
-              _filteredComics = [];
-              _comics = Future.value(updated);
-            });
-          },
+          onRefresh: _handleRefresh,
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Stack(
@@ -89,30 +96,52 @@ class _ComicsListScreenState extends State<ComicsListScreen> {
                   suggestionList: allComics.map((c) => c.title).toList(),
                   onSubmit: (input) => _handleSearch(input, allComics),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 60),
-                  child: GridView.count(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    childAspectRatio: 0.48,
-                    children:
-                        displayComics.map((comic) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (_) => ComicDetailScreen(comic: comic),
-                                ),
-                              );
-                            },
-                            child: ItemCard(comic: comic),
-                          );
-                        }).toList(),
+
+                if (_wasASearchMade && _filteredComics.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 60),
+                    child: ListView(
+                      children: [
+                        SizedBox(height: 200),
+                        Center(
+                          child: Text(
+                            'Comic not found!',
+                            style: TextStyle(fontSize: 22),
+                          ),
+                        ),
+                        Text(
+                          'Try searching using an hyphen (-)',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  Padding(
+                    padding: const EdgeInsets.only(top: 60),
+                    child: GridView.count(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      childAspectRatio: 0.48,
+                      children:
+                          displayComics.map((comic) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (_) => ComicDetailScreen(comic: comic),
+                                  ),
+                                );
+                              },
+                              child: ItemCard(comic: comic),
+                            );
+                          }).toList(),
+                    ),
                   ),
-                ),
               ],
             ),
           ),

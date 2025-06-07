@@ -15,6 +15,7 @@ class CharactersListScreen extends StatefulWidget {
 class _CharactersListScreenState extends State<CharactersListScreen> {
   late Future<List<Character>> _characters;
   List<Character> _filteredCharacters = [];
+  var _wasASearchMade = false;
 
   @override
   void initState() {
@@ -36,6 +37,7 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
         );
         setState(() {
           _filteredCharacters = response;
+          _wasASearchMade = true;
         });
       } catch (e) {
         SnackBar(
@@ -48,6 +50,18 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
         );
       }
     }
+  }
+
+  Future<void> _handleRefresh() async {
+    final updated = await MarvelApi.fetchAllData(
+      'characters',
+      Character.fromJson,
+    );
+    setState(() {
+      _filteredCharacters = [];
+      _wasASearchMade = false;
+      _characters = Future.value(updated);
+    });
   }
 
   @override
@@ -75,16 +89,7 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
             _filteredCharacters.isEmpty ? allCharacters : _filteredCharacters;
 
         return RefreshIndicator(
-          onRefresh: () async {
-            final updated = await MarvelApi.fetchAllData(
-              'characters',
-              Character.fromJson,
-            );
-            setState(() {
-              _filteredCharacters = [];
-              _characters = Future.value(updated);
-            });
-          },
+          onRefresh: _handleRefresh,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Stack(
@@ -93,32 +98,49 @@ class _CharactersListScreenState extends State<CharactersListScreen> {
                   suggestionList: allCharacters.map((c) => c.name).toList(),
                   onSubmit: (input) => _handleSearch(input, allCharacters),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 60),
-                  child: GridView.count(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    childAspectRatio: 0.66,
-                    children:
-                        displayCharacters.map((character) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (_) => CharacterDetailScreen(
-                                        character: character,
-                                      ),
-                                ),
-                              );
-                            },
-                            child: ItemCard(character: character),
-                          );
-                        }).toList(),
+
+                if (_wasASearchMade && _filteredCharacters.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 60),
+                    child: ListView(
+                      children: [
+                        SizedBox(height: 200),
+                        Center(
+                          child: Text(
+                            'Character not found!',
+                            style: TextStyle(fontSize: 22),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  Padding(
+                    padding: const EdgeInsets.only(top: 60),
+                    child: GridView.count(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      childAspectRatio: 0.66,
+                      children:
+                          displayCharacters.map((character) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (_) => CharacterDetailScreen(
+                                          character: character,
+                                        ),
+                                  ),
+                                );
+                              },
+                              child: ItemCard(character: character),
+                            );
+                          }).toList(),
+                    ),
                   ),
-                ),
               ],
             ),
           ),

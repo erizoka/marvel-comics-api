@@ -54,9 +54,12 @@ class MarvelApi {
     String name,
     T Function(Map<String, dynamic>) fromJson,
   ) async {
+    final param =
+        endpoint.contains('comics') ? 'titleStartsWith' : 'nameStartsWith';
+
     final response = await api.get(
       Uri.parse(
-        '$_baseUrl/$endpoint?ts=$_ts&apikey=$_apikey&hash=$_hash&nameStartsWith=$name',
+        '$_baseUrl/$endpoint?ts=$_ts&apikey=$_apikey&hash=$_hash&$param=$name',
       ),
     );
 
