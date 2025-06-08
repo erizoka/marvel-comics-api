@@ -48,6 +48,7 @@ class ItemCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Roboto',
                 color: Theme.of(context).colorScheme.tertiary,
+                decoration: TextDecoration.none,
               ),
               maxLines: character != null ? 1 : 3,
               minFontSize: 14,

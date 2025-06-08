@@ -116,7 +116,7 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
             background: Stack(
               fit: StackFit.expand,
               children: [
-                Image.network(widget.character.thumbnailUrl, fit: BoxFit.cover),
+                Image.network(widget.character.thumbnailUrl, fit: BoxFit.fill),
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -138,7 +138,9 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
-              widget.character.description,
+              widget.character.description.isNotEmpty
+                  ? widget.character.description
+                  : "No description available",
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'MontSerrat',
@@ -198,39 +200,63 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
             },
           ),
 
-        // if (_isEventsOpen)
-        FutureBuilder<List<Comic>>(
-          future: _events,
-          builder: (ctx, snapshot) {
-            final errorWidget = checkSnapshotData(snapshot);
-            if (errorWidget != null) {
-              return SliverToBoxAdapter(child: errorWidget);
-            }
-            final events = snapshot.data ?? [];
+        if (_isEventsOpen)
+          FutureBuilder<List<Comic>>(
+            future: _events,
+            builder: (ctx, snapshot) {
+              final errorWidget = checkSnapshotData(snapshot);
+              if (errorWidget != null) {
+                return SliverToBoxAdapter(child: errorWidget);
+              }
+              final events = snapshot.data ?? [];
 
-            return SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                events.map((event) {
+              return SliverList.builder(
+                itemCount: events.length,
+                itemBuilder: (ctx, i) {
+                  final event = events[i];
                   return Card(
-                    elevation: 2,
-                    shape: ContinuousRectangleBorder(),
-                    child: Row(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 9,
+                      vertical: 4,
+                    ),
+                    child: ExpansionTile(
+                      minTileHeight: 80,
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          event.thumbnailUrl,
+                          height: 90,
+                          width: 90,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      title: Text(
+                        event.title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
                       children: [
-                        Image.network(event.thumbnailUrl),
-                        Column(
-                          children: [
-                            Text(event.title),
-                            Text(event.description),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text(
+                            event.description.isNotEmpty
+                                ? event.description
+                                : "No description available",
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   );
-                });
-              }),
-            );
-          },
-        ),
+                },
+              );
+            },
+          ),
       ],
     );
   }
