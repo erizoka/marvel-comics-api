@@ -3,6 +3,7 @@ class Comic {
   final String title;
   final String thumbnailUrl;
   final String description;
+  final String charactersUri;
   bool? isFavorite;
 
   Comic({
@@ -10,6 +11,7 @@ class Comic {
     required this.title,
     required this.description,
     required this.thumbnailUrl,
+    required this.charactersUri,
     this.isFavorite,
   });
 
@@ -18,8 +20,9 @@ class Comic {
     return Comic(
       id: json['id'],
       title: json['title'],
-      description: json['description'] ?? "No description available",
+      description: json['description'],
       thumbnailUrl: '${thumbnail['path']}.${thumbnail['extension']}',
+      charactersUri: json['characters']['collectionURI'],
     );
   }
 }

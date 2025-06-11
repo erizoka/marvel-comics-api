@@ -68,6 +68,7 @@ flutter:
     - assets/images/Marvel-Logo.png
     - assets/images/Marvel-Logo.svg
     - assets/images/image_placeholder.jpg
+    - assets/images/nothing-to-see-here.png
     - assets/mock/mock_characters.json
     - assets/mock/mock_comics.json
   #   - images/a_dot_ham.jpeg

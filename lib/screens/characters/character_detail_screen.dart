@@ -7,6 +7,7 @@ import 'package:marvel_comics/widgets/buttons/comics_button.dart';
 import 'package:marvel_comics/widgets/buttons/events_button.dart';
 import 'package:marvel_comics/widgets/buttons/favorite_button.dart';
 import 'package:marvel_comics/widgets/item_card.dart';
+import 'package:marvel_comics/widgets/nothing_here.dart';
 
 class CharacterDetailScreen extends StatefulWidget {
   final Character character;
@@ -19,7 +20,7 @@ class CharacterDetailScreen extends StatefulWidget {
 class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
   late bool _isFavorite;
   bool _isEventsOpen = false;
-  bool _isComicsOpen = false;
+  bool _isComicsOpen = true;
   late Future<List<Comic>> _comics;
   late Future<List<Comic>> _events;
 
@@ -141,6 +142,7 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
               widget.character.description.isNotEmpty
                   ? widget.character.description
                   : "No description available",
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'MontSerrat',
@@ -157,8 +159,8 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
           mainAxisSpacing: 1,
           childAspectRatio: 3,
           children: [
-            ComicsButton(onPressed: toggleComics),
-            EventsButton(onPressed: toggleEvents),
+            ComicsButton(onPressed: toggleComics, isSelectecd: _isComicsOpen),
+            EventsButton(onPressed: toggleEvents, isSelectecd: _isEventsOpen),
             FavoriteButton(isFavorite: _isFavorite, onPressed: toggleFavorite),
           ],
         ),
@@ -174,29 +176,34 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
 
               final comics = snapshot.data ?? [];
 
-              return SliverGrid.count(
-                crossAxisCount: 3,
-                mainAxisSpacing: 3,
-                crossAxisSpacing: 4,
-                childAspectRatio: 0.50,
-                children:
-                    comics.map((comic) {
-                      return Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => ComicDetailScreen(comic: comic),
-                              ),
-                            );
-                          },
-                          child: ItemCard(comic: comic),
-                        ),
-                      );
-                    }).toList(),
-              );
+              if (comics.isEmpty) {
+                return SliverToBoxAdapter(child: NothingHere());
+              } else {
+                return SliverGrid.count(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 3,
+                  crossAxisSpacing: 4,
+                  childAspectRatio: 0.50,
+                  children:
+                      comics.map((comic) {
+                        return Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (_) => ComicDetailScreen(comic: comic),
+                                ),
+                              );
+                            },
+                            child: ItemCard(comic: comic),
+                          ),
+                        );
+                      }).toList(),
+                );
+              }
             },
           ),
 
@@ -210,51 +217,55 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
               }
               final events = snapshot.data ?? [];
 
-              return SliverList.builder(
-                itemCount: events.length,
-                itemBuilder: (ctx, i) {
-                  final event = events[i];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 9,
-                      vertical: 4,
-                    ),
-                    child: ExpansionTile(
-                      minTileHeight: 80,
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          event.thumbnailUrl,
-                          height: 90,
-                          width: 90,
-                          fit: BoxFit.cover,
-                        ),
+              if (events.isEmpty) {
+                return SliverToBoxAdapter(child: NothingHere());
+              } else {
+                return SliverList.builder(
+                  itemCount: events.length,
+                  itemBuilder: (ctx, i) {
+                    final event = events[i];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 9,
+                        vertical: 4,
                       ),
-                      title: Text(
-                        event.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Text(
-                            event.description.isNotEmpty
-                                ? event.description
-                                : "No description available",
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
+                      child: ExpansionTile(
+                        minTileHeight: 80,
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            event.thumbnailUrl,
+                            height: 90,
+                            width: 90,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              );
+                        title: Text(
+                          event.title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Text(
+                              event.description.isNotEmpty
+                                  ? event.description
+                                  : "No description available",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }
             },
           ),
       ],

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class ComicsButton extends StatelessWidget {
+class CharactersButton extends StatelessWidget {
   final void Function() onPressed;
   final bool isSelectecd;
-  const ComicsButton({
+  const CharactersButton({
     super.key,
     required this.onPressed,
     required this.isSelectecd,
@@ -14,14 +14,14 @@ class ComicsButton extends StatelessWidget {
     return TextButton.icon(
       onPressed: onPressed,
       icon: Icon(
-        Icons.menu_book_sharp,
+        Icons.people,
         color: Theme.of(context).colorScheme.tertiary,
         size: isSelectecd ? 30 : 35,
       ),
       label:
           isSelectecd
               ? Text(
-                "Comics",
+                "Characters",
                 style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
               )
               : const SizedBox.shrink(),

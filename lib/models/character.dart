@@ -22,7 +22,7 @@ class Character {
     return Character(
       id: json['id'],
       name: json['name'],
-      description: json['description'] ?? "No description available",
+      description: json['description'],
       thumbnailUrl: '${thumbnail['path']}.${thumbnail['extension']}',
       comicsUri: json['comics']['collectionURI'],
       eventsUri: json['events']['collectionURI'],

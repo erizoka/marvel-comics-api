@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:marvel_comics/api/marvel_api.dart';
+import 'package:marvel_comics/models/character.dart';
 import 'package:marvel_comics/models/comic.dart';
 import 'package:marvel_comics/widgets/buttons/favorite_button.dart';
 
@@ -12,6 +14,8 @@ class ComicDetailScreen extends StatefulWidget {
 
 class _ComicDetailScreenState extends State<ComicDetailScreen> {
   late bool _isFavorite;
+  bool _isCharactersOpen = true;
+  late Future<List<Character>> _characters;
 
   void toggleFavorite() {
     setState(() {
@@ -20,10 +24,40 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
     });
   }
 
+  void toggleCharacters() {
+    setState(() {
+      _isCharactersOpen = !_isCharactersOpen;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _isFavorite = widget.comic.isFavorite ?? false;
+    _characters = MarvelApi.fetchData(
+      widget.comic.charactersUri,
+      Character.fromJson,
+    );
+  }
+
+  Center? checkSnapshotData(AsyncSnapshot snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.secondary,
+          strokeWidth: 5,
+        ),
+      );
+    }
+    if (snapshot.hasError || !snapshot.hasData) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 300),
+          child: Text('Error loading characters!'),
+        ),
+      );
+    }
+    return null;
   }
 
   @override
@@ -102,6 +136,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
             ),
           ),
         ),
+
         SliverGrid.count(
           crossAxisCount: 3,
           crossAxisSpacing: 1,
