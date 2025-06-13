@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:marvel_comics/api/marvel_api.dart';
 import 'package:marvel_comics/models/character.dart';
 import 'package:marvel_comics/models/comic.dart';
+import 'package:marvel_comics/screens/characters/character_detail_screen.dart';
+import 'package:marvel_comics/widgets/buttons/characters_button.dart';
 import 'package:marvel_comics/widgets/buttons/favorite_button.dart';
+import 'package:marvel_comics/widgets/item_card.dart';
+import 'package:marvel_comics/widgets/nothing_here.dart';
 
 class ComicDetailScreen extends StatefulWidget {
   final Comic comic;
@@ -14,7 +18,7 @@ class ComicDetailScreen extends StatefulWidget {
 
 class _ComicDetailScreenState extends State<ComicDetailScreen> {
   late bool _isFavorite;
-  bool _isCharactersOpen = true;
+  bool _isCharactersOpen = false;
   late Future<List<Character>> _characters;
 
   void toggleFavorite() {
@@ -143,9 +147,55 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
           mainAxisSpacing: 1,
           childAspectRatio: 3,
           children: [
+            CharactersButton(
+              onPressed: toggleCharacters,
+              isSelectecd: _isCharactersOpen,
+            ),
             FavoriteButton(isFavorite: _isFavorite, onPressed: toggleFavorite),
           ],
         ),
+
+        if (_isCharactersOpen)
+          FutureBuilder<List<Character>>(
+            future: _characters,
+            builder: (context, snapshot) {
+              final errorWidget = checkSnapshotData(snapshot);
+              if (errorWidget != null) {
+                return SliverToBoxAdapter(child: errorWidget);
+              }
+
+              final characters = snapshot.data ?? [];
+
+              if (characters.isEmpty) {
+                return SliverToBoxAdapter(child: NothingHere());
+              } else {
+                return SliverGrid.count(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 3,
+                  children:
+                      characters.map((character) {
+                        return Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (_) => CharacterDetailScreen(
+                                        character: character,
+                                      ),
+                                ),
+                              );
+                            },
+                            child: ItemCard(character: character),
+                          ),
+                        );
+                      }).toList(),
+                );
+              }
+            },
+          ),
       ],
     );
   }

@@ -16,13 +16,16 @@ class CharactersButton extends StatelessWidget {
       icon: Icon(
         Icons.people,
         color: Theme.of(context).colorScheme.tertiary,
-        size: isSelectecd ? 30 : 35,
+        size: isSelectecd ? 27 : 35,
       ),
       label:
           isSelectecd
               ? Text(
                 "Characters",
-                style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.tertiary,
+                  fontSize: 14,
+                ),
               )
               : const SizedBox.shrink(),
     );
