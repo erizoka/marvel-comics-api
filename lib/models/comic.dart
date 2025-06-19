@@ -5,6 +5,7 @@ class Comic {
   final String description;
   final String charactersUri;
   bool? isFavorite;
+  List<dynamic> creators;
 
   Comic({
     required this.id,
@@ -12,17 +13,20 @@ class Comic {
     required this.description,
     required this.thumbnailUrl,
     required this.charactersUri,
+    required this.creators,
     this.isFavorite,
   });
 
   factory Comic.fromJson(Map<String, dynamic> json) {
     final thumbnail = json['thumbnail'];
+
     return Comic(
       id: json['id'],
       title: json['title'],
       description: json['description'] ?? "No description available",
       thumbnailUrl: '${thumbnail['path']}.${thumbnail['extension']}',
       charactersUri: json['characters']['collectionURI'],
+      creators: json['creators']['items'],
     );
   }
 }

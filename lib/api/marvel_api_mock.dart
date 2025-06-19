@@ -44,6 +44,7 @@ class MarvelApiMock {
         description: e['description'] ?? '',
         thumbnailUrl: thumbnailUrl,
         charactersUri: '',
+        creators: [],
       );
     }).toList();
   }

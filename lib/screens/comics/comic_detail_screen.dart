@@ -18,7 +18,8 @@ class ComicDetailScreen extends StatefulWidget {
 
 class _ComicDetailScreenState extends State<ComicDetailScreen> {
   late bool _isFavorite;
-  bool _isCharactersOpen = false;
+  bool _isCharactersOpen = true;
+  bool _isCreatorsOpen = false;
   late Future<List<Character>> _characters;
 
   void toggleFavorite() {
@@ -31,6 +32,14 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
   void toggleCharacters() {
     setState(() {
       _isCharactersOpen = !_isCharactersOpen;
+      _isCreatorsOpen = !_isCreatorsOpen;
+    });
+  }
+
+  void toggleCreators() {
+    setState(() {
+      _isCharactersOpen = !_isCharactersOpen;
+      _isCreatorsOpen = !_isCreatorsOpen;
     });
   }
 
@@ -151,6 +160,10 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
               onPressed: toggleCharacters,
               isSelectecd: _isCharactersOpen,
             ),
+            CharactersButton(
+              onPressed: toggleCreators,
+              isSelectecd: _isCreatorsOpen,
+            ),
             FavoriteButton(isFavorite: _isFavorite, onPressed: toggleFavorite),
           ],
         ),
@@ -195,6 +208,36 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
                 );
               }
             },
+          ),
+
+        if (_isCreatorsOpen)
+          SliverGrid.count(
+            crossAxisCount: 2,
+            childAspectRatio: 1.7,
+            children: [
+              ...widget.comic.creators.map((creator) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      creator['name'],
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      creator['role'],
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                );
+              }),
+            ],
           ),
       ],
     );
