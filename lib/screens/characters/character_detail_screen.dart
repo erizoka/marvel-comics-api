@@ -3,8 +3,7 @@ import 'package:marvel_comics/api/marvel_api.dart';
 import 'package:marvel_comics/models/character.dart';
 import 'package:marvel_comics/models/comic.dart';
 import 'package:marvel_comics/screens/comics/comic_detail_screen.dart';
-import 'package:marvel_comics/widgets/buttons/comics_button.dart';
-import 'package:marvel_comics/widgets/buttons/events_button.dart';
+import 'package:marvel_comics/widgets/buttons/detail_screen_button.dart';
 import 'package:marvel_comics/widgets/buttons/favorite_button.dart';
 import 'package:marvel_comics/widgets/item_card.dart';
 import 'package:marvel_comics/widgets/nothing_here.dart';
@@ -159,8 +158,18 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
           mainAxisSpacing: 1,
           childAspectRatio: 3,
           children: [
-            ComicsButton(onPressed: toggleComics, isSelectecd: _isComicsOpen),
-            EventsButton(onPressed: toggleEvents, isSelectecd: _isEventsOpen),
+            DetailScreenButton(
+              onPressed: toggleComics,
+              isSelectecd: _isComicsOpen,
+              icon: Icons.menu_book_sharp,
+              title: 'Comics',
+            ),
+            DetailScreenButton(
+              onPressed: toggleEvents,
+              isSelectecd: _isEventsOpen,
+              icon: Icons.calendar_month,
+              title: 'Events',
+            ),
             FavoriteButton(isFavorite: _isFavorite, onPressed: toggleFavorite),
           ],
         ),

@@ -3,7 +3,7 @@ import 'package:marvel_comics/api/marvel_api.dart';
 import 'package:marvel_comics/models/character.dart';
 import 'package:marvel_comics/models/comic.dart';
 import 'package:marvel_comics/screens/characters/character_detail_screen.dart';
-import 'package:marvel_comics/widgets/buttons/characters_button.dart';
+import 'package:marvel_comics/widgets/buttons/detail_screen_button.dart';
 import 'package:marvel_comics/widgets/buttons/favorite_button.dart';
 import 'package:marvel_comics/widgets/item_card.dart';
 import 'package:marvel_comics/widgets/nothing_here.dart';
@@ -73,6 +73,21 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
     return null;
   }
 
+  IconData creatorIcon(String role) {
+    final normalized = role.toLowerCase();
+
+    if (normalized.contains('writer')) return Icons.edit;
+    if (normalized.contains('penciller')) return Icons.create;
+    if (normalized.contains('inker')) return Icons.brush;
+    if (normalized.contains('cover')) return Icons.book_rounded;
+    if (normalized.contains('colorist')) return Icons.palette;
+    if (normalized.contains('letterer')) return Icons.text_fields;
+    if (normalized.contains('editor')) return Icons.edit_note;
+    if (normalized.contains('artist')) return Icons.draw;
+
+    return Icons.person;
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -140,6 +155,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
             padding: const EdgeInsets.all(16),
             child: Text(
               widget.comic.description,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'MontSerrat',
@@ -156,13 +172,18 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
           mainAxisSpacing: 1,
           childAspectRatio: 3,
           children: [
-            CharactersButton(
+            DetailScreenButton(
               onPressed: toggleCharacters,
               isSelectecd: _isCharactersOpen,
+              icon: Icons.wc_rounded,
+              title: 'Characters',
+              fontSize: 14,
             ),
-            CharactersButton(
+            DetailScreenButton(
               onPressed: toggleCreators,
               isSelectecd: _isCreatorsOpen,
+              icon: Icons.person,
+              title: 'Creators',
             ),
             FavoriteButton(isFavorite: _isFavorite, onPressed: toggleFavorite),
           ],
@@ -216,25 +237,56 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
             childAspectRatio: 1.7,
             children: [
               ...widget.comic.creators.map((creator) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      creator['name'],
-                      style: TextStyle(
-                        decoration: TextDecoration.none,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(176, 0, 0, 0),
+                      borderRadius: BorderRadius.circular(32),
+                      border: Border.all(color: Colors.white),
                     ),
-                    Text(
-                      creator['role'],
-                      style: TextStyle(
-                        decoration: TextDecoration.none,
-                        fontSize: 13,
-                      ),
+                    padding: EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          creator['name'],
+                          style: TextStyle(
+                            decoration: TextDecoration.none,
+                            fontSize: 22,
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 6),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Icon(
+                                creatorIcon(creator['role']),
+                                size: 20,
+                                blendMode: BlendMode.darken,
+                              ),
+                            ),
+                            Text(
+                              creator['role'],
+                              style: TextStyle(
+                                decoration: TextDecoration.none,
+                                fontSize: 14,
+                                color: Colors.grey[400],
+                                fontStyle: FontStyle.italic,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 );
               }),
             ],

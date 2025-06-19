@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 
-class ComicsButton extends StatelessWidget {
+class DetailScreenButton extends StatelessWidget {
   final void Function() onPressed;
   final bool isSelectecd;
-  const ComicsButton({
+  final IconData icon;
+  final String title;
+  final double? fontSize;
+  const DetailScreenButton({
     super.key,
     required this.onPressed,
     required this.isSelectecd,
+    required this.icon,
+    required this.title,
+    this.fontSize,
   });
 
   @override
@@ -14,15 +20,18 @@ class ComicsButton extends StatelessWidget {
     return TextButton.icon(
       onPressed: onPressed,
       icon: Icon(
-        Icons.menu_book_sharp,
+        icon,
         color: Theme.of(context).colorScheme.tertiary,
         size: isSelectecd ? 30 : 35,
       ),
       label:
           isSelectecd
               ? Text(
-                "Comics",
-                style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+                title,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.tertiary,
+                  fontSize: fontSize,
+                ),
               )
               : const SizedBox.shrink(),
     );
