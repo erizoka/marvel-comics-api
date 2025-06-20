@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as api;
@@ -17,9 +18,11 @@ class MarvelApi {
     String endpoint,
     T Function(Map<String, dynamic>) fromJson,
   ) async {
+    var offset = Random();
+
     final response = await api.get(
       Uri.parse(
-        '$_baseUrl/$endpoint?ts=$_ts&apikey=$_apikey&hash=$_hash&orderBy=modified&offset=127&limit=100',
+        '$_baseUrl/$endpoint?ts=$_ts&apikey=$_apikey&hash=$_hash&orderBy=modified&offset=${offset.nextInt(1000)}&limit=100',
       ),
     );
 

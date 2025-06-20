@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:marvel_comics/screens/characters/characters_list_screen.dart';
 import 'package:marvel_comics/screens/comics/comics_list_screen.dart';
+import 'package:marvel_comics/screens/favorite_screen.dart';
 import 'package:marvel_comics/screens/multi_carousels_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,6 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
       case 2:
         child = ComicsListScreen();
         break;
+      case 3:
+        child = FavoriteScreen();
+        break;
       default:
         child = MultiCarouselsScreen();
     }
@@ -39,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SizedBox.expand(child: child),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         onTap: (newIndex) => setState(() => _index = newIndex),
         currentIndex: _index,
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -54,10 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.menu_book_sharp),
             label: 'Comics',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.star_outline_outlined),
-          //   label: 'Favorites',
-          // ),
+          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favorites'),
         ],
       ),
     );

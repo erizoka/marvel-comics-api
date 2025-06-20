@@ -175,14 +175,14 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
             DetailScreenButton(
               onPressed: toggleCharacters,
               isSelectecd: _isCharactersOpen,
-              icon: Icons.wc_rounded,
+              icon: Icons.people_rounded,
               title: 'Characters',
               fontSize: 14,
             ),
             DetailScreenButton(
               onPressed: toggleCreators,
               isSelectecd: _isCreatorsOpen,
-              icon: Icons.person,
+              icon: Icons.edit_document,
               title: 'Creators',
             ),
             FavoriteButton(isFavorite: _isFavorite, onPressed: toggleFavorite),
@@ -241,8 +241,8 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(176, 0, 0, 0),
-                      borderRadius: BorderRadius.circular(32),
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: Colors.white),
                     ),
                     padding: EdgeInsets.all(8),
@@ -254,9 +254,8 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
                           creator['name'],
                           style: TextStyle(
                             decoration: TextDecoration.none,
-                            fontSize: 22,
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.white,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -269,7 +268,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
                               child: Icon(
                                 creatorIcon(creator['role']),
                                 size: 20,
-                                blendMode: BlendMode.darken,
+                                color: Colors.grey[400],
                               ),
                             ),
                             Text(
