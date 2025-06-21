@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:marvel_comics/api/marvel_api.dart';
 import 'package:marvel_comics/models/character.dart';
 import 'package:marvel_comics/models/comic.dart';
+import 'package:marvel_comics/provider/favorites_provider.dart';
 import 'package:marvel_comics/screens/characters/character_detail_screen.dart';
 import 'package:marvel_comics/widgets/buttons/detail_screen_button.dart';
 import 'package:marvel_comics/widgets/buttons/favorite_button.dart';
 import 'package:marvel_comics/widgets/item_card.dart';
 import 'package:marvel_comics/widgets/nothing_here.dart';
+import 'package:provider/provider.dart';
 
 class ComicDetailScreen extends StatefulWidget {
   final Comic comic;
@@ -23,9 +25,13 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
   late Future<List<Character>> _characters;
 
   void toggleFavorite() {
+    final provider = Provider.of<FavoritesProvider>(context, listen: false);
+
     setState(() {
       _isFavorite = !_isFavorite;
       widget.comic.isFavorite = _isFavorite;
+
+      provider.toggleComicFavorite(widget.comic);
     });
   }
 
@@ -56,9 +62,12 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
   Center? checkSnapshotData(AsyncSnapshot snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return Center(
-        child: CircularProgressIndicator(
-          color: Theme.of(context).colorScheme.secondary,
-          strokeWidth: 5,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 90),
+          child: CircularProgressIndicator(
+            color: Theme.of(context).colorScheme.secondary,
+            strokeWidth: 5,
+          ),
         ),
       );
     }
@@ -74,16 +83,14 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
   }
 
   IconData creatorIcon(String role) {
-    final normalized = role.toLowerCase();
-
-    if (normalized.contains('writer')) return Icons.edit;
-    if (normalized.contains('penciller')) return Icons.create;
-    if (normalized.contains('inker')) return Icons.brush;
-    if (normalized.contains('cover')) return Icons.book_rounded;
-    if (normalized.contains('colorist')) return Icons.palette;
-    if (normalized.contains('letterer')) return Icons.text_fields;
-    if (normalized.contains('editor')) return Icons.edit_note;
-    if (normalized.contains('artist')) return Icons.draw;
+    if (role.toLowerCase().contains('writer')) return Icons.edit;
+    if (role.toLowerCase().contains('penciller')) return Icons.create;
+    if (role.toLowerCase().contains('inker')) return Icons.brush;
+    if (role.toLowerCase().contains('cover')) return Icons.book_rounded;
+    if (role.toLowerCase().contains('colorist')) return Icons.palette;
+    if (role.toLowerCase().contains('letterer')) return Icons.text_fields;
+    if (role.toLowerCase().contains('editor')) return Icons.edit_note;
+    if (role.toLowerCase().contains('artist')) return Icons.draw;
 
     return Icons.person;
   }

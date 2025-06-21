@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:marvel_comics/api/marvel_api.dart';
 import 'package:marvel_comics/models/character.dart';
 import 'package:marvel_comics/models/comic.dart';
+import 'package:marvel_comics/provider/favorites_provider.dart';
 import 'package:marvel_comics/screens/comics/comic_detail_screen.dart';
 import 'package:marvel_comics/widgets/buttons/detail_screen_button.dart';
 import 'package:marvel_comics/widgets/buttons/favorite_button.dart';
 import 'package:marvel_comics/widgets/item_card.dart';
 import 'package:marvel_comics/widgets/nothing_here.dart';
+import 'package:provider/provider.dart';
 
 class CharacterDetailScreen extends StatefulWidget {
   final Character character;
@@ -24,9 +26,13 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
   late Future<List<Comic>> _events;
 
   void toggleFavorite() {
+    final provider = Provider.of<FavoritesProvider>(context, listen: false);
+
     setState(() {
       _isFavorite = !_isFavorite;
       widget.character.isFavorite = _isFavorite;
+
+      provider.toggleCharacterFavorite(widget.character);
     });
   }
 
@@ -47,9 +53,12 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
   Center? checkSnapshotData(AsyncSnapshot snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return Center(
-        child: CircularProgressIndicator(
-          color: Theme.of(context).colorScheme.secondary,
-          strokeWidth: 5,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 90),
+          child: CircularProgressIndicator(
+            color: Theme.of(context).colorScheme.secondary,
+            strokeWidth: 5,
+          ),
         ),
       );
     }
@@ -141,7 +150,10 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
               widget.character.description.isNotEmpty
                   ? widget.character.description
                   : "No description available",
-              textAlign: TextAlign.center,
+              textAlign:
+                  widget.character.description.isNotEmpty
+                      ? TextAlign.start
+                      : TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'MontSerrat',
