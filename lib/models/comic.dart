@@ -4,7 +4,6 @@ class Comic {
   final String thumbnailUrl;
   final String description;
   final String charactersUri;
-  bool? isFavorite;
   List<dynamic> creators;
 
   Comic({
@@ -14,7 +13,6 @@ class Comic {
     required this.thumbnailUrl,
     required this.charactersUri,
     required this.creators,
-    this.isFavorite,
   });
 
   factory Comic.fromJson(Map<String, dynamic> json) {

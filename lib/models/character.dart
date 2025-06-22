@@ -5,7 +5,6 @@ class Character {
   final String thumbnailUrl;
   final String comicsUri;
   final String eventsUri;
-  bool? isFavorite;
 
   Character({
     required this.id,
@@ -14,7 +13,6 @@ class Character {
     required this.thumbnailUrl,
     required this.comicsUri,
     required this.eventsUri,
-    this.isFavorite,
   });
 
   factory Character.fromJson(Map<String, dynamic> json) {

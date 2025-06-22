@@ -24,13 +24,16 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
   bool _isCreatorsOpen = false;
   late Future<List<Character>> _characters;
 
+  void isComicFavorite() {
+    final provider = Provider.of<FavoritesProvider>(context, listen: false);
+    _isFavorite = provider.favoriteComics.contains(widget.comic);
+  }
+
   void toggleFavorite() {
     final provider = Provider.of<FavoritesProvider>(context, listen: false);
 
     setState(() {
       _isFavorite = !_isFavorite;
-      widget.comic.isFavorite = _isFavorite;
-
       provider.toggleComicFavorite(widget.comic);
     });
   }
@@ -52,7 +55,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _isFavorite = widget.comic.isFavorite ?? false;
+    isComicFavorite();
     _characters = MarvelApi.fetchData(
       widget.comic.charactersUri,
       Character.fromJson,
