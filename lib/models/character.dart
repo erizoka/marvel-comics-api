@@ -15,6 +15,14 @@ class Character {
     required this.eventsUri,
   });
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Character && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
   factory Character.fromJson(Map<String, dynamic> json) {
     final thumbnail = json['thumbnail'];
     return Character(

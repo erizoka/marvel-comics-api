@@ -26,7 +26,9 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
 
   void isComicFavorite() {
     final provider = Provider.of<FavoritesProvider>(context, listen: false);
-    _isFavorite = provider.favoriteComics.contains(widget.comic);
+    setState(() {
+      _isFavorite = provider.favoriteComics.contains(widget.comic);
+    });
   }
 
   void toggleFavorite() {

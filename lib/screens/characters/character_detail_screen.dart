@@ -27,7 +27,9 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
 
   void isCharacterFavorite() {
     final provider = Provider.of<FavoritesProvider>(context, listen: false);
-    _isFavorite = provider.favoriteCharacters.contains(widget.character);
+    setState(() {
+      _isFavorite = provider.favoriteCharacters.contains(widget.character);
+    });
   }
 
   void toggleFavorite() {
