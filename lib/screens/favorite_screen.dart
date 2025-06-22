@@ -19,7 +19,11 @@ class FavoriteScreen extends StatelessWidget {
           return Center(
             child: Text(
               'No favorites added yet',
-              style: TextStyle(fontFamily: 'Montserrat'),
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
             ),
           );
         }
@@ -80,7 +84,7 @@ class FavoriteScreen extends StatelessWidget {
                   ),
                   GridView.count(
                     crossAxisCount: 3,
-                    childAspectRatio: 0.5,
+                    childAspectRatio: 0.48,
                     padding: EdgeInsets.all(10),
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),

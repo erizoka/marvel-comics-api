@@ -162,7 +162,12 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
             padding: const EdgeInsets.all(16),
             child: Text(
               widget.comic.description,
-              textAlign: TextAlign.center,
+              textAlign:
+                  widget.comic.description.toLowerCase().contains(
+                        'no description available',
+                      )
+                      ? TextAlign.center
+                      : TextAlign.start,
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'MontSerrat',
@@ -213,6 +218,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
                 return SliverGrid.count(
                   crossAxisCount: 3,
                   mainAxisSpacing: 3,
+                  childAspectRatio: 0.8,
                   children:
                       characters.map((character) {
                         return Padding(
