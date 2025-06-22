@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:marvel_comics/provider/favorites_provider.dart';
-import 'package:marvel_comics/screens/home_screen.dart';
+import 'package:marvel_comics/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 Future main() async {
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       fontFamily: 'PlusJakartaSans',
     );
     return MaterialApp(
-      title: 'Marvel Comics API',
+      title: 'Marvel Comics',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.black,
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
           unselectedItemColor: Colors.white,
         ),
       ),
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }
