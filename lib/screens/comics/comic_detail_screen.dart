@@ -3,10 +3,9 @@ import 'package:marvel_comics/api/marvel_api.dart';
 import 'package:marvel_comics/models/character.dart';
 import 'package:marvel_comics/models/comic.dart';
 import 'package:marvel_comics/provider/favorites_provider.dart';
-import 'package:marvel_comics/screens/characters/character_detail_screen.dart';
 import 'package:marvel_comics/widgets/buttons/detail_screen_button.dart';
 import 'package:marvel_comics/widgets/buttons/favorite_button.dart';
-import 'package:marvel_comics/widgets/item_card.dart';
+import 'package:marvel_comics/widgets/details_grid.dart';
 import 'package:marvel_comics/widgets/nothing_here.dart';
 import 'package:provider/provider.dart';
 
@@ -62,29 +61,6 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
       widget.comic.charactersUri,
       Character.fromJson,
     );
-  }
-
-  Center? checkSnapshotData(AsyncSnapshot snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 90),
-          child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.secondary,
-            strokeWidth: 5,
-          ),
-        ),
-      );
-    }
-    if (snapshot.hasError || !snapshot.hasData) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 300),
-          child: Text('Error loading characters!'),
-        ),
-      );
-    }
-    return null;
   }
 
   IconData creatorIcon(String role) {
@@ -206,108 +182,70 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
           ],
         ),
 
-        if (_isCharactersOpen)
-          FutureBuilder<List<Character>>(
-            future: _characters,
-            builder: (context, snapshot) {
-              final errorWidget = checkSnapshotData(snapshot);
-              if (errorWidget != null) {
-                return SliverToBoxAdapter(child: errorWidget);
-              }
-
-              final characters = snapshot.data ?? [];
-
-              if (characters.isEmpty) {
-                return SliverToBoxAdapter(child: NothingHere());
-              } else {
-                return SliverGrid.count(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 3,
-                  childAspectRatio: 0.8,
-                  children:
-                      characters.map((character) {
-                        return Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (_) => CharacterDetailScreen(
-                                        character: character,
-                                      ),
-                                ),
-                              );
-                            },
-                            child: ItemCard(character: character),
-                          ),
-                        );
-                      }).toList(),
-                );
-              }
-            },
-          ),
+        if (_isCharactersOpen) DetailsGrid(charactersList: _characters),
 
         if (_isCreatorsOpen)
-          SliverGrid.count(
-            crossAxisCount: 2,
-            childAspectRatio: 1.7,
-            children: [
-              ...widget.comic.creators.map((creator) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.white),
-                    ),
-                    padding: EdgeInsets.all(8),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          creator['name'],
-                          style: TextStyle(
-                            decoration: TextDecoration.none,
-                            fontSize: 20,
-                            color: Colors.white,
+          if (widget.comic.creators.isEmpty)
+            SliverToBoxAdapter(child: NothingHere())
+          else
+            SliverGrid.count(
+              crossAxisCount: 2,
+              childAspectRatio: 1.7,
+              children: [
+                ...widget.comic.creators.map((creator) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondary,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.white),
+                      ),
+                      padding: EdgeInsets.all(8),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            creator['name'],
+                            style: TextStyle(
+                              decoration: TextDecoration.none,
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 6),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 4),
-                              child: Icon(
-                                creatorIcon(creator['role']),
-                                size: 20,
-                                color: Colors.grey[400],
+                          SizedBox(height: 6),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 4),
+                                child: Icon(
+                                  creatorIcon(creator['role']),
+                                  size: 20,
+                                  color: Colors.grey[400],
+                                ),
                               ),
-                            ),
-                            Text(
-                              creator['role'],
-                              style: TextStyle(
-                                decoration: TextDecoration.none,
-                                fontSize: 14,
-                                color: Colors.grey[400],
-                                fontStyle: FontStyle.italic,
+                              Text(
+                                creator['role'],
+                                style: TextStyle(
+                                  decoration: TextDecoration.none,
+                                  fontSize: 14,
+                                  color: Colors.grey[400],
+                                  fontStyle: FontStyle.italic,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }),
-            ],
-          ),
+                  );
+                }),
+              ],
+            ),
       ],
     );
   }

@@ -9,13 +9,31 @@ class MultiCarouselsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Border titleBorder = Border(
+      bottom: BorderSide(width: 1, color: Colors.white),
+    );
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Characters', style: TextStyle(fontWeight: FontWeight.bold)),
+            Container(
+              decoration: BoxDecoration(border: titleBorder),
+              child: Padding(
+                padding: const EdgeInsets.all(3),
+                child: Center(
+                  child: Text(
+                    'Characters of the day ',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Center(
               child: CharacterCarousel(
                 onTap: (character) {
@@ -29,7 +47,21 @@ class MultiCarouselsScreen extends StatelessWidget {
                 },
               ),
             ),
-            Text('Comics', style: TextStyle(fontWeight: FontWeight.bold)),
+            Container(
+              decoration: BoxDecoration(border: titleBorder),
+              child: Padding(
+                padding: const EdgeInsets.all(3),
+                child: Center(
+                  child: Text(
+                    'Comics of the day ',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Center(
               child: ComicsCarousel(
                 onTap: (comic) {

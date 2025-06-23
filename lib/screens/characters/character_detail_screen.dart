@@ -3,11 +3,10 @@ import 'package:marvel_comics/api/marvel_api.dart';
 import 'package:marvel_comics/models/character.dart';
 import 'package:marvel_comics/models/comic.dart';
 import 'package:marvel_comics/provider/favorites_provider.dart';
-import 'package:marvel_comics/screens/comics/comic_detail_screen.dart';
 import 'package:marvel_comics/widgets/buttons/detail_screen_button.dart';
 import 'package:marvel_comics/widgets/buttons/favorite_button.dart';
-import 'package:marvel_comics/widgets/item_card.dart';
-import 'package:marvel_comics/widgets/nothing_here.dart';
+import 'package:marvel_comics/widgets/details_grid.dart';
+import 'package:marvel_comics/widgets/events_list.dart';
 import 'package:provider/provider.dart';
 
 class CharacterDetailScreen extends StatefulWidget {
@@ -53,29 +52,6 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
       _isComicsOpen = true;
       _isEventsOpen = false;
     });
-  }
-
-  Center? checkSnapshotData(AsyncSnapshot snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 90),
-          child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.secondary,
-            strokeWidth: 5,
-          ),
-        ),
-      );
-    }
-    if (snapshot.hasError || !snapshot.hasData) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 300),
-          child: Text('Error loading comics!'),
-        ),
-      );
-    }
-    return null;
   }
 
   @override
@@ -191,109 +167,9 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
           ],
         ),
 
-        if (_isComicsOpen)
-          FutureBuilder<List<Comic>>(
-            future: _comics,
-            builder: (context, snapshot) {
-              final errorWidget = checkSnapshotData(snapshot);
-              if (errorWidget != null) {
-                return SliverToBoxAdapter(child: errorWidget);
-              }
+        if (_isComicsOpen) DetailsGrid(comicsList: _comics),
 
-              final comics = snapshot.data ?? [];
-
-              if (comics.isEmpty) {
-                return SliverToBoxAdapter(child: NothingHere());
-              } else {
-                return SliverGrid.count(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 3,
-                  crossAxisSpacing: 4,
-                  childAspectRatio: 0.50,
-                  children:
-                      comics.map((comic) {
-                        return Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (_) => ComicDetailScreen(comic: comic),
-                                ),
-                              );
-                            },
-                            child: ItemCard(comic: comic),
-                          ),
-                        );
-                      }).toList(),
-                );
-              }
-            },
-          ),
-
-        if (_isEventsOpen)
-          FutureBuilder<List<Comic>>(
-            future: _events,
-            builder: (ctx, snapshot) {
-              final errorWidget = checkSnapshotData(snapshot);
-              if (errorWidget != null) {
-                return SliverToBoxAdapter(child: errorWidget);
-              }
-              final events = snapshot.data ?? [];
-
-              if (events.isEmpty) {
-                return SliverToBoxAdapter(child: NothingHere());
-              } else {
-                return SliverList.builder(
-                  itemCount: events.length,
-                  itemBuilder: (ctx, i) {
-                    final event = events[i];
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 9,
-                        vertical: 4,
-                      ),
-                      child: ExpansionTile(
-                        minTileHeight: 80,
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            event.thumbnailUrl,
-                            height: 90,
-                            width: 90,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        title: Text(
-                          event.title,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Text(
-                              event.description.isNotEmpty
-                                  ? event.description
-                                  : "No description available",
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              }
-            },
-          ),
+        if (_isEventsOpen) EventsList(events: _events),
       ],
     );
   }
