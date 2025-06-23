@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:marvel_comics/screens/characters/characters_list_screen.dart';
 import 'package:marvel_comics/screens/comics/comics_list_screen.dart';
 import 'package:marvel_comics/screens/favorite_screen.dart';
-import 'package:marvel_comics/screens/multi_carousels_screen.dart';
+import 'package:marvel_comics/screens/highlights_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget child;
     switch (_index) {
       case 0:
-        child = MultiCarouselsScreen();
+        child = HighlightsScreen();
         break;
       case 1:
         child = CharactersListScreen();
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child = FavoriteScreen();
         break;
       default:
-        child = MultiCarouselsScreen();
+        child = HighlightsScreen();
     }
 
     return Scaffold(

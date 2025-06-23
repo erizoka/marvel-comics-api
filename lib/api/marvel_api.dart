@@ -31,13 +31,16 @@ class MarvelApi {
 
   static Future<List<T>> fetchAllData<T>(
     String endpoint,
-    T Function(Map<String, dynamic>) fromJson,
-  ) async {
+    T Function(Map<String, dynamic>) fromJson, [
+    bool withParams = true,
+  ]) async {
     var offset = Random();
 
     final response = await api.get(
       Uri.parse(
-        '$_baseUrl/$endpoint?$_apiAuth&orderBy=modified&offset=${offset.nextInt(1000)}&limit=100',
+        withParams
+            ? '$_baseUrl/$endpoint?$_apiAuth&orderBy=modified&offset=${offset.nextInt(1000)}&limit=100'
+            : '$_baseUrl/$endpoint?$_apiAuth',
       ),
     );
 
