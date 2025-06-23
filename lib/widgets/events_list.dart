@@ -4,8 +4,12 @@ import 'package:marvel_comics/widgets/nothing_here.dart';
 
 class EventsList extends StatelessWidget {
   final Future<List<Comic>> events;
-  final bool? shuffleEvents;
-  const EventsList({super.key, required this.events, this.shuffleEvents});
+  final bool shuffleEvents;
+  const EventsList({
+    super.key,
+    required this.events,
+    this.shuffleEvents = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +45,7 @@ class EventsList extends StatelessWidget {
         }
         final events = snapshot.data ?? [];
 
-        if (shuffleEvents! && events.isNotEmpty) {
+        if (shuffleEvents && events.isNotEmpty) {
           events.shuffle();
         }
 
@@ -49,7 +53,7 @@ class EventsList extends StatelessWidget {
           return SliverToBoxAdapter(child: NothingHere());
         } else {
           return SliverList.builder(
-            itemCount: shuffleEvents! ? 5 : events.length,
+            itemCount: shuffleEvents ? 3 : events.length,
             itemBuilder: (ctx, i) {
               final event = events[i];
               return Card(
