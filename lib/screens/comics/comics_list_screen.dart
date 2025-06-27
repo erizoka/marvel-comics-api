@@ -3,7 +3,7 @@ import 'package:marvel_comics/api/marvel_api.dart';
 import 'package:marvel_comics/models/comic.dart';
 import 'package:marvel_comics/screens/comics/comic_detail_screen.dart';
 import 'package:marvel_comics/widgets/custom_search_bar.dart';
-import 'package:marvel_comics/widgets/item_card.dart';
+import 'package:marvel_comics/widgets/utils/item_card.dart';
 
 class ComicsListScreen extends StatefulWidget {
   const ComicsListScreen({super.key});

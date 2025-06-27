@@ -3,8 +3,7 @@ import 'package:marvel_comics/api/marvel_api.dart';
 import 'package:marvel_comics/models/comic.dart';
 import 'package:marvel_comics/screens/characters/character_detail_screen.dart';
 import 'package:marvel_comics/screens/comics/comic_detail_screen.dart';
-import 'package:marvel_comics/widgets/carousels/character_carousel.dart';
-import 'package:marvel_comics/widgets/carousels/comics_carousel.dart';
+import 'package:marvel_comics/widgets/utils/custom_carousel.dart';
 import 'package:marvel_comics/widgets/events_list.dart';
 
 class HighlightsScreen extends StatefulWidget {
@@ -15,13 +14,11 @@ class HighlightsScreen extends StatefulWidget {
 }
 
 class _HighlightsScreenState extends State<HighlightsScreen> {
-  late Future<List<Comic>> _events;
-
-  @override
-  void initState() {
-    super.initState();
-    _events = MarvelApi.fetchAllData('events', Comic.fromJson, false);
-  }
+  final Future<List<Comic>> _events = MarvelApi.fetchAllData(
+    'events',
+    Comic.fromJson,
+    false,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +52,8 @@ class _HighlightsScreenState extends State<HighlightsScreen> {
               children: [
                 titleContainer('Characters of the day '),
                 Center(
-                  child: CharacterCarousel(
+                  child: CustomCarousel(
+                    endpoint: 'characters',
                     onTap: (character) {
                       Navigator.push(
                         context,
@@ -66,11 +64,14 @@ class _HighlightsScreenState extends State<HighlightsScreen> {
                         ),
                       );
                     },
+                    height: 200,
+                    width: 230,
                   ),
                 ),
                 titleContainer('Comics of the day '),
                 Center(
-                  child: ComicsCarousel(
+                  child: CustomCarousel(
+                    endpoint: 'comics',
                     onTap: (comic) {
                       Navigator.push(
                         context,
@@ -79,6 +80,8 @@ class _HighlightsScreenState extends State<HighlightsScreen> {
                         ),
                       );
                     },
+                    height: 450,
+                    width: 350,
                   ),
                 ),
                 titleContainer('Events of the day'),

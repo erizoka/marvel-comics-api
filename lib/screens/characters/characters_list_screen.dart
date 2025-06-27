@@ -3,7 +3,7 @@ import 'package:marvel_comics/api/marvel_api.dart';
 import 'package:marvel_comics/models/character.dart';
 import 'package:marvel_comics/screens/characters/character_detail_screen.dart';
 import 'package:marvel_comics/widgets/custom_search_bar.dart';
-import 'package:marvel_comics/widgets/item_card.dart';
+import 'package:marvel_comics/widgets/utils/item_card.dart';
 
 class CharactersListScreen extends StatefulWidget {
   const CharactersListScreen({super.key});

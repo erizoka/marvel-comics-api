@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marvel_comics/provider/favorites_provider.dart';
-import 'package:marvel_comics/screens/home_screen.dart';
+import 'package:marvel_comics/screens/navigation_screen.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
       Navigator.of(
         context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => HomeScreen()));
+      ).pushReplacement(MaterialPageRoute(builder: (_) => NavigationScreen()));
     });
   }
 

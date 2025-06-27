@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:marvel_comics/provider/favorites_provider.dart';
 import 'package:marvel_comics/screens/characters/character_detail_screen.dart';
 import 'package:marvel_comics/screens/comics/comic_detail_screen.dart';
-import 'package:marvel_comics/widgets/item_card.dart';
+import 'package:marvel_comics/widgets/utils/item_card.dart';
 import 'package:provider/provider.dart';
 
 class FavoriteScreen extends StatelessWidget {

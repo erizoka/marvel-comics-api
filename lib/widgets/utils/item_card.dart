@@ -45,6 +45,7 @@ class ItemCard extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
+                overflow: TextOverflow.clip,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Roboto',
                 color: Theme.of(context).colorScheme.tertiary,

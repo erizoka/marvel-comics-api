@@ -5,7 +5,7 @@ import 'package:marvel_comics/models/comic.dart';
 import 'package:marvel_comics/provider/favorites_provider.dart';
 import 'package:marvel_comics/widgets/buttons/detail_screen_button.dart';
 import 'package:marvel_comics/widgets/buttons/favorite_button.dart';
-import 'package:marvel_comics/widgets/details_grid.dart';
+import 'package:marvel_comics/widgets/utils/details_grid.dart';
 import 'package:marvel_comics/widgets/events_list.dart';
 import 'package:provider/provider.dart';
 

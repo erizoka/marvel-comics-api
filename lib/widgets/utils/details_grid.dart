@@ -3,7 +3,7 @@ import 'package:marvel_comics/models/character.dart';
 import 'package:marvel_comics/models/comic.dart';
 import 'package:marvel_comics/screens/characters/character_detail_screen.dart';
 import 'package:marvel_comics/screens/comics/comic_detail_screen.dart';
-import 'package:marvel_comics/widgets/item_card.dart';
+import 'package:marvel_comics/widgets/utils/item_card.dart';
 import 'package:marvel_comics/widgets/nothing_here.dart';
 
 class DetailsGrid extends StatelessWidget {

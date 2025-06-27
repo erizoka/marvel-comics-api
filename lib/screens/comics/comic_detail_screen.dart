@@ -5,7 +5,7 @@ import 'package:marvel_comics/models/comic.dart';
 import 'package:marvel_comics/provider/favorites_provider.dart';
 import 'package:marvel_comics/widgets/buttons/detail_screen_button.dart';
 import 'package:marvel_comics/widgets/buttons/favorite_button.dart';
-import 'package:marvel_comics/widgets/details_grid.dart';
+import 'package:marvel_comics/widgets/utils/details_grid.dart';
 import 'package:marvel_comics/widgets/nothing_here.dart';
 import 'package:provider/provider.dart';
 
@@ -197,7 +197,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Colors.red[600],
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: Colors.white),
                       ),
@@ -212,6 +212,7 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
                               decoration: TextDecoration.none,
                               fontSize: 20,
                               color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
                           ),

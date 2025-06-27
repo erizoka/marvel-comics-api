@@ -28,8 +28,8 @@ class EventsList extends StatelessWidget {
       if (snapshot.hasError || !snapshot.hasData) {
         return Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 300),
-            child: Text('Error loading characters!'),
+            padding: const EdgeInsets.all(30),
+            child: Text('Error loading Events!'),
           ),
         );
       }

@@ -4,14 +4,14 @@ import 'package:marvel_comics/screens/comics/comics_list_screen.dart';
 import 'package:marvel_comics/screens/favorite_screen.dart';
 import 'package:marvel_comics/screens/highlights_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class NavigationScreen extends StatefulWidget {
+  const NavigationScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<NavigationScreen> createState() => _NavigationScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _NavigationScreenState extends State<NavigationScreen> {
   int _index = 0;
 
   @override
