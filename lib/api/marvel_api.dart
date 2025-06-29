@@ -16,7 +16,7 @@ class MarvelApi {
 
   static final String _apiAuth = 'ts=$_ts&apikey=$_apikey&hash=$_hash';
 
-  static List<T> responseMapping<T>(
+  static List<T> _responseMapping<T>(
     api.Response response,
     T Function(Map<String, dynamic>) fromJson,
   ) {
@@ -44,7 +44,7 @@ class MarvelApi {
       ),
     );
 
-    return responseMapping(response, fromJson);
+    return _responseMapping(response, fromJson);
   }
 
   static Future<List<T>> fetchData<T>(
@@ -53,7 +53,7 @@ class MarvelApi {
   ) async {
     final response = await api.get(Uri.parse('$endpoint?$_apiAuth'));
 
-    return responseMapping(response, fromJson);
+    return _responseMapping(response, fromJson);
   }
 
   static Future<List<T>> fetchByName<T>(
@@ -68,7 +68,7 @@ class MarvelApi {
       Uri.parse('$_baseUrl/$endpoint?$_apiAuth&$param=$name'),
     );
 
-    return responseMapping(response, fromJson);
+    return _responseMapping(response, fromJson);
   }
 
   static Future<List<T>> fetchById<T>(
@@ -80,6 +80,6 @@ class MarvelApi {
       Uri.parse('$_baseUrl/$endpoint/$id?$_apiAuth'),
     );
 
-    return responseMapping(response, fromJson);
+    return _responseMapping(response, fromJson);
   }
 }

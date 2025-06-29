@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:marvel_comics/api/marvel_api.dart';
+import 'package:marvel_comics/models/character.dart';
 import 'package:marvel_comics/models/comic.dart';
 import 'package:marvel_comics/widgets/nothing_here.dart';
+import 'package:marvel_comics/widgets/utils/details_grid.dart';
 
 class EventsList extends StatelessWidget {
   final Future<List<Comic>> events;
   final bool shuffleEvents;
+  final bool showCharacters;
   const EventsList({
     super.key,
     required this.events,
     this.shuffleEvents = false,
+    this.showCharacters = false,
   });
 
   @override
@@ -56,6 +61,10 @@ class EventsList extends StatelessWidget {
             itemCount: shuffleEvents ? 3 : events.length,
             itemBuilder: (ctx, i) {
               final event = events[i];
+              final characters = MarvelApi.fetchData(
+                events[i].charactersUri,
+                Character.fromJson,
+              );
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
                 child: ExpansionTile(
@@ -89,6 +98,8 @@ class EventsList extends StatelessWidget {
                         ),
                       ),
                     ),
+                    if (showCharacters) SizedBox(height: 2),
+                    if (showCharacters) DetailsGrid(charactersList: characters),
                   ],
                 ),
               );

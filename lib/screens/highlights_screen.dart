@@ -89,7 +89,7 @@ class _HighlightsScreenState extends State<HighlightsScreen> {
             ),
           ),
         ),
-        EventsList(events: _events, shuffleEvents: true),
+        EventsList(events: _events, shuffleEvents: true, showCharacters: true),
       ],
     );
   }
