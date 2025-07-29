@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as api;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:marvel_comics/screens/server_unavailable.dart';
 
 class MarvelApi {
   static final String _baseUrl = dotenv.env['baseUrl']!;
@@ -25,7 +27,8 @@ class MarvelApi {
       final results = body['data']['results'] as List;
       return results.map((item) => fromJson(item)).toList();
     } else {
-      throw Exception('Erro ao acessar a api!');
+      Get.off(ServerUnavailable());
+      throw Exception('API server unavailable');
     }
   }
 

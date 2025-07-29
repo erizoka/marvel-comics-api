@@ -41,6 +41,7 @@ dependencies:
   auto_size_text: ^3.0.0
   provider: ^6.1.5
   shared_preferences: ^2.5.3
+  get: ^4.7.2
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,9 @@ flutter:
     - assets/images/image_placeholder.jpg
     - assets/images/Marvel-Logo.png
     - assets/images/nothing-to-see-here.png
+    - assets/images/oh-no.png
+    - assets/images/web-1.png
+    - assets/images/web-2.png
     - assets/images/splash-screen-1.png
     - assets/images/splash-screen-2.png
     - assets/mock/mock_characters.json
