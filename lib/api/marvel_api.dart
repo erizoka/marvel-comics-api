@@ -45,12 +45,29 @@ class MarvelApi {
     T Function(Map<String, dynamic>) fromJson, [
     bool withParams = true,
   ]) async {
-    var offset = Random();
+    var random = Random();
+    var orderBy = '';
+
+    switch (random.nextInt(4)) {
+      case 0:
+        orderBy = 'name';
+        break;
+      case 1:
+        orderBy = 'modified';
+        break;
+      case 2:
+        orderBy = '-name';
+        break;
+      case 3:
+        orderBy = '-modified';
+        break;
+      default:
+    }
 
     final response = await api.get(
       Uri.parse(
         withParams
-            ? '$_baseUrl/$endpoint?$_apiAuth&orderBy=modified&offset=${offset.nextInt(1000)}&limit=100'
+            ? '$_baseUrl/$endpoint?$_apiAuth&orderBy=$orderBy&offset=${random.nextInt(1000)}&limit=100'
             : '$_baseUrl/$endpoint?$_apiAuth',
       ),
     );
