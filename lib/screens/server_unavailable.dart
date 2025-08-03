@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:marvel_comics/provider/server_error_controller.dart';
 import 'package:marvel_comics/screens/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 class ServerUnavailable extends StatelessWidget {
   const ServerUnavailable({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Provider.of<ServerErrorController>(
+      context,
+      listen: false,
+    );
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Stack(
@@ -66,6 +73,7 @@ class ServerUnavailable extends StatelessWidget {
               SizedBox(height: 50),
               ElevatedButton(
                 onPressed: () {
+                  controller.resetError();
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => SplashScreen()),

@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as api;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:marvel_comics/provider/server_error_controller.dart';
 import 'package:marvel_comics/screens/server_unavailable.dart';
+import 'package:marvel_comics/services/navigation_service.dart';
+import 'package:provider/provider.dart';
 
 class MarvelApi {
   static final String _baseUrl = dotenv.env['baseUrl']!;
@@ -22,13 +24,19 @@ class MarvelApi {
     api.Response response,
     T Function(Map<String, dynamic>) fromJson,
   ) {
+    final controller = Provider.of<ServerErrorController>(
+      NavigationService.navigatorKey.currentContext!,
+      listen: false,
+    );
+
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
       final results = body['data']['results'] as List;
       return results.map((item) => fromJson(item)).toList();
     } else {
-      Get.off(ServerUnavailable());
-      throw Exception('API server unavailable');
+      controller.triggerError();
+      NavigationService.replaceWith(const ServerUnavailable());
+      return [];
     }
   }
 

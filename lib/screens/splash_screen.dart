@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:marvel_comics/provider/server_error_controller.dart';
 import 'package:marvel_comics/provider/favorites_provider.dart';
 import 'package:marvel_comics/screens/navigation_screen.dart';
+import 'package:marvel_comics/screens/server_unavailable.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -16,11 +18,23 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    final serverError = Provider.of<ServerErrorController>(
+      context,
+      listen: false,
+    );
 
     Future.delayed(const Duration(milliseconds: 2000), () {
       setState(() {
         _showBlackLogo = true;
       });
+    });
+
+    serverError.addListener(() {
+      if (serverError.hasError) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => ServerUnavailable()),
+        );
+      }
     });
 
     Future.delayed(const Duration(seconds: 4), () async {

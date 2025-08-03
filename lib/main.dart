@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:marvel_comics/provider/server_error_controller.dart';
 import 'package:marvel_comics/provider/favorites_provider.dart';
 import 'package:marvel_comics/screens/splash_screen.dart';
+import 'package:marvel_comics/services/navigation_service.dart';
 import 'package:provider/provider.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => FavoritesProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
+        ChangeNotifierProvider(create: (_) => ServerErrorController()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -26,6 +31,7 @@ class MyApp extends StatelessWidget {
     );
     return MaterialApp(
       title: 'Marvel Comics',
+      navigatorKey: NavigationService.navigatorKey,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.black,
