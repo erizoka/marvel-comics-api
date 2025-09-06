@@ -61,20 +61,20 @@ Sem essas chaves, as funcionalidades de busca e listagem não irão funcionar co
 
 <img src="assets/prints/splash.gif" alt="Splash" width="220"/>
 
-### 🏠 Home e Detalhes
+### 🏠 Home e Favoritos
 
 <p>
   <img src="assets/prints/home.png" alt="Home" width="220"/>
   <img src="assets/prints/events.png" alt="Home" width="220"/>
-  <img src="assets/prints/detail-character.png" alt="Character Detail" width="220"/>
-  <img src="assets/prints/detail-comic.png" alt="Comic Detail" width="220"/>
+  <img src="assets/prints/favorites.png" alt="Favorites" width="220"/>
 </p>
 
-### 🔎 Pesquisa e Favoritos
+### 🔎 Pesquisa e Detalhes
 
 <p>
   <img src="assets/prints/search.gif" alt="Search" width="220"/>
-  <img src="assets/prints/favorites.png" alt="Favorites" width="220"/>
+  <img src="assets/prints/detail-character.png" alt="Character Detail" width="220"/>
+  <img src="assets/prints/detail-comic.png" alt="Comic Detail" width="220"/>
 </p>
 
 ## 📄 Licença
