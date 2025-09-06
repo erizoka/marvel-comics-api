@@ -9,7 +9,9 @@ import 'package:marvel_comics/widgets/nothing_here.dart';
 class DetailsGrid extends StatelessWidget {
   final Future<List<Character>>? charactersList;
   final Future<List<Comic>>? comicsList;
-  const DetailsGrid({super.key, this.charactersList, this.comicsList});
+  final bool isHome;
+  const DetailsGrid({
+    super.key, this.charactersList, this.comicsList, this.isHome = false});
 
   @override
   Widget build(BuildContext context) {
@@ -67,27 +69,58 @@ class DetailsGrid extends StatelessWidget {
         if (items.isEmpty) {
           return SliverToBoxAdapter(child: NothingHere());
         } else {
-          return SliverGrid.count(
-            crossAxisCount: 3,
-            mainAxisSpacing: 3,
-            crossAxisSpacing: 2,
-            childAspectRatio: childAspectRatio,
-            children:
-                items.map((item) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => pageRouter(item)),
-                        );
-                      },
-                      child: child(item),
-                    ),
-                  );
-                }).toList(),
-          );
+          if(!isHome) {
+            return SliverGrid.count(
+              crossAxisCount: 3,
+              mainAxisSpacing: 3,
+              crossAxisSpacing: 2,
+              childAspectRatio: childAspectRatio,
+              children:
+              items.map((item) {
+                return Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => pageRouter(item)),
+                      );
+                    },
+                    child: child(item),
+                  ),
+                );
+              }).toList(),
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.all(1),
+              child: GridView.builder(
+                shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: items.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 3,
+                      mainAxisSpacing: 4,
+                      childAspectRatio: 0.74
+                  ),
+                  itemBuilder: (ctx, i) {
+                      final char = items[i];
+                      return ClipRRect(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => pageRouter(char)),
+                            );
+                          },
+                          child: child(char),
+                        ),
+                      );
+                  }
+              ),
+            );
+          }
         }
       },
     );

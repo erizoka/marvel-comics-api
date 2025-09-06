@@ -99,7 +99,8 @@ class EventsList extends StatelessWidget {
                       ),
                     ),
                     if (showCharacters) SizedBox(height: 2),
-                    if (showCharacters) DetailsGrid(charactersList: characters),
+                    if (showCharacters)
+                      DetailsGrid(charactersList: characters, isHome: true),
                   ],
                 ),
               );
