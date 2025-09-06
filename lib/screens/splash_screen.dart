@@ -17,11 +17,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    super.initState();
     final serverError = Provider.of<ServerErrorController>(
       context,
       listen: false,
     );
+    super.initState();
 
     Future.delayed(const Duration(milliseconds: 2000), () {
       setState(() {
@@ -30,6 +30,8 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     serverError.addListener(() {
+      if (!mounted) return;
+
       if (serverError.hasError) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => ServerUnavailable()),

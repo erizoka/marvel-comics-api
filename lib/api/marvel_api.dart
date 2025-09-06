@@ -19,25 +19,24 @@ class MarvelApi {
   static final String _hash = md5.convert(utf8.encode(_message)).toString();
 
   static final String _apiAuth = 'ts=$_ts&apikey=$_apikey&hash=$_hash';
+  static final _controller = Provider.of<ServerErrorController>(
+    NavigationService.navigatorKey.currentContext!,
+    listen: false,
+  );
 
   static List<T> _responseMapping<T>(
     api.Response response,
     T Function(Map<String, dynamic>) fromJson,
   ) {
-    final controller = Provider.of<ServerErrorController>(
-      NavigationService.navigatorKey.currentContext!,
-      listen: false,
-    );
-
-    if (response.statusCode == 200) {
-      final body = jsonDecode(response.body);
-      final results = body['data']['results'] as List;
-      return results.map((item) => fromJson(item)).toList();
-    } else {
-      controller.triggerError();
+    if (response.statusCode == 418) {
+      _controller.triggerError();
       NavigationService.replaceWith(const ServerUnavailable());
       return [];
     }
+
+    final body = jsonDecode(response.body);
+    final results = body['data']['results'] as List;
+    return results.map((item) => fromJson(item)).toList();
   }
 
   static Future<List<T>> fetchAllData<T>(
