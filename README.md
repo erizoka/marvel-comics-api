@@ -59,30 +59,22 @@ Sem essas chaves, as funcionalidades de busca e listagem não irão funcionar co
 
 ### 🏠 Home e Detalhes
 
-```sh
-~api fora do ar, prints serão adicionados quando normalizar
-```
-
-<!-- <table>
+<table>
   <tr>
-    <td><img src="/assets/prints/home.png" width="200"/></td>
-    <td><img src="/assets/prints/details-character.png" width="200"/></td>
-    <td><img src="/assets/prints/details-comic.png" width="200"/></td>
+    <td><img src="/assets/prints/home.png" width="1080" alt="home"/></td>
+    <td><img src="/assets/prints/detail-character.png" width="1080" alt="character detail"/></td>
+    <td><img src="/assets/prints/detail-comic.png" width="1080" alt="comic detail"/></td>
   </tr>
-</table> -->
+</table> 
 
 ### 🔎 Pesquisa e Favoritos
 
-```sh
-~api fora do ar, prints serão adicionados quando normalizar
-```
-
-<!-- <table>
+<table>
   <tr>
-    <td><img src="/assets/prints/search.png" width="200"/></td>
-    <td><img src="/assets/prints/favorites.png" width="200"/></td>
+    <td><img src="/assets/prints/search.gif" width="200" alt="search gif"/></td>
+    <td><img src="/assets/prints/favorites.png" width="1080" alt="favorites"/></td>
   </tr>
-</table> -->
+</table>
 
 ### 🎬 SplashScreen
 
