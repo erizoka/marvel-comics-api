@@ -57,28 +57,25 @@ Sem essas chaves, as funcionalidades de busca e listagem não irão funcionar co
 
 ## 📷 Capturas de Tela
 
+### 🎬 SplashScreen
+
+<img src="assets/prints/splash.gif" alt="Splash" width="220"/>
+
 ### 🏠 Home e Detalhes
 
-<table>
-  <tr>
-    <td><img src="/assets/prints/home.png" width="1080" alt="home"/></td>
-    <td><img src="/assets/prints/detail-character.png" width="1080" alt="character detail"/></td>
-    <td><img src="/assets/prints/detail-comic.png" width="1080" alt="comic detail"/></td>
-  </tr>
-</table> 
+<p>
+  <img src="assets/prints/home.png" alt="Home" width="220"/>
+  <img src="assets/prints/events.png" alt="Home" width="220"/>
+  <img src="assets/prints/detail-character.png" alt="Character Detail" width="220"/>
+  <img src="assets/prints/detail-comic.png" alt="Comic Detail" width="220"/>
+</p>
 
 ### 🔎 Pesquisa e Favoritos
 
-<table>
-  <tr>
-    <td><img src="/assets/prints/search.gif" width="200" alt="search gif"/></td>
-    <td><img src="/assets/prints/favorites.png" width="1080" alt="favorites"/></td>
-  </tr>
-</table>
-
-### 🎬 SplashScreen
-
-![Splash Animation](assets/prints/splash.gif)
+<p>
+  <img src="assets/prints/search.gif" alt="Search" width="220"/>
+  <img src="assets/prints/favorites.png" alt="Favorites" width="220"/>
+</p>
 
 ## 📄 Licença
 
