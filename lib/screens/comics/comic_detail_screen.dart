@@ -120,7 +120,10 @@ class _ComicDetailScreenState extends State<ComicDetailScreen> {
             background: Stack(
               fit: StackFit.expand,
               children: [
-                Image.network(widget.comic.thumbnailUrl, fit: BoxFit.cover),
+                Hero(
+                    tag: widget.comic.id,
+                    child: Image.network(widget.comic.thumbnailUrl, fit: BoxFit.cover)
+                ),
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(

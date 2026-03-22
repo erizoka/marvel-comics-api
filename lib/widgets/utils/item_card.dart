@@ -38,7 +38,10 @@ class ItemCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             isImageAvailable
-                ? Image.network(url, cacheHeight: character != null ? 95 : null)
+                ? Hero(
+                    tag: character!.id,
+                    child: Image.network(url, cacheHeight: character != null ? 95 : null)
+                )
                 : Image.asset('assets/images/image_placeholder.jpg'),
             AutoSizeText(
               character?.name ?? comic!.title,

@@ -106,7 +106,10 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen> {
             background: Stack(
               fit: StackFit.expand,
               children: [
-                Image.network(widget.character.thumbnailUrl, fit: BoxFit.fill),
+                Hero(
+                    tag: widget.character.id,
+                    child: Image.network(widget.character.thumbnailUrl, fit: BoxFit.fill)
+                ),
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
