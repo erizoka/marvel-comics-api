@@ -28,7 +28,7 @@ class MarvelApi {
     api.Response response,
     T Function(Map<String, dynamic>) fromJson,
   ) {
-    if (response.statusCode == 418) {
+    if (response.statusCode == 418 || response.statusCode == 500) {
       _controller.triggerError();
       NavigationService.replaceWith(const ServerUnavailable());
       return [];
